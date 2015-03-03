@@ -1,0 +1,8 @@
+git config --global user.name lmurta
+git config --gloval user.email luciano.murta@gmail.com
+github > create repository
+
+git add .
+git remote add origin https://github.com/lmurta/analogRead
+git push origin master
+git pull origin master
