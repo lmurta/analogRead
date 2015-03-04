@@ -1,7 +1,7 @@
 doctype html(lang='en')
 head
     meta(charset='utf-8')
-    title Bootstrap 3, from LayoutIt!
+    title PHT Arduinos Sensors
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='description', content='')
     meta(name='author', content='')
@@ -67,12 +67,13 @@ head
           an3 = data.an3;
           an4 = data.an4;
           an5 = data.an5;
+          an5 = an5 * 5.0 /1024 *3.5;
           $('#div_an0').text(an0 +":A0");
           $('#div_an1').text(an1 +":A1");
           $('#div_an2').text(an2 +":A2");
           $('#div_an3').text(an3 +":A3");
           $('#div_an4').text(an4 +":A4");
-          $('#div_an5').text(an5 +":A5");
+          $('#div_an5').text(an5.toFixed(2) +":A5");
           if(d0.length>totalPoints){
             d0 = d0.splice(1,totalPoints);
             d1 = d1.slice(0-totalPoints);
@@ -80,12 +81,14 @@ head
             d3 = d3.slice(0-totalPoints);
             d4 = d4.slice(0-totalPoints);
             d5 = d5.slice(0-totalPoints);
+
           }
           d0.push([i,an0]);  
           d1.push([i,an1]); 
           d2.push([i,an2]); 
           d3.push([i,an3]); 
           d4.push([i,an4]); 
+
           d5.push([i,an5]); 
           i++;
           update();
@@ -100,6 +103,7 @@ head
           { data: d1, label:'A1'},
           { data: d2, label:'A2'}
         ];
+        /*
         var plot = $.plot("#placeholder", 
           //[ getRandomData() ]
           d
@@ -117,7 +121,7 @@ head
             show: false,
             mode:'time'
           }
-        });
+        });*/
         function update() {
           //d0=[[1,1],[2,2],[3,3]];
           var d=[
@@ -126,7 +130,7 @@ head
             { data: d2, label:'A2'},
             { data: d3, label:'A3'},
             { data: d4, label:'A4'},
-            { data: d5, label:'A5'}
+            { data: d5, label:'A5', yaxis:2, lineWidth: 2}
           ];
           plot = $.plot("#placeholder", 
             d
@@ -138,15 +142,20 @@ head
                 
               },
               shadowSize: 0, // Drawing is faster without shadows
-              
             },
             colors: ["#edc240","#2B65EC", "#cb4b4b", "#4da74d", "#9440ed", "#B2912F"],
-            yaxis: {
-              min: 0,
-              max: 1024
-            },
-            xaxis: {
-              show: true
+            //yaxis: {
+            //  min: 0,
+            //  max: 1024
+            //},
+            yaxes: [  { position: "left" , min: 0, max: 1024 }, 
+                      { position: "right", min: 0, max: 14 } 
+                  ],
+            xaxes: {  show: true },
+            grid: {
+              markings: [
+                { color: "#f00", lineWidth: 1, yaxis: { from: 512, to: 512 } }
+              ]
             }
           });
             // Since the axes don't change, we don't need to call plot.setupGrid()
