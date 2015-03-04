@@ -6,3 +6,6 @@ git add .
 git remote add origin https://github.com/lmurta/analogRead
 git push origin master
 git pull origin master
+
+on new computer
+git clone https://github.com/lmurta/analogRead
