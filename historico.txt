@@ -1,5 +1,8 @@
 git config --global user.name lmurta
-git config --gloval user.email luciano.murta@gmail.com
+git config --global user.email xx@yy
+
+git config --global credential.helper 'cache --timeout=3600'
+
 github > create repository
 
 git add .
@@ -9,3 +12,6 @@ git pull origin master
 
 on new computer
 git clone https://github.com/lmurta/analogRead
+after file modified
+git commit -m "file modified"
+git push
