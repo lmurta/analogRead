@@ -38,6 +38,16 @@ head
        }
       }
       $(function() {
+        //$('.saveFileCheckbox').prop('checked', true);
+        $('#saveFileCheckbox').change(function () {
+          if($('#saveFileCheckbox').is(':checked')){
+            //console.log('save file true');
+            socket.emit('saveFile', { saveFile: 'true' });
+          }else{
+            //console.log('save file false');
+            socket.emit('saveFile', { saveFile: 'false' });
+          }
+        });
         var socket = io();
         var an0, an1, an2,an3, an4, an5;
         var d0=[], d1=[], d2=[], d3=[], d4=[], d5=[];
@@ -84,7 +94,7 @@ head
         });
         var  totalPoints = 300;
         // Set up the control widget
-        var updateInterval = 30;
+        //var updateInterval = 30;
         var d=[
           { data: d0, label:'A0'},
           { data: d1, label:'A1'},
@@ -211,7 +221,7 @@ head
           h3
             | Sensores do Arduino
           p
-          #placeholder.demo-placeholder(style="width:800px;height:400px")
+          #placeholder.demo-placeholder(style="width:600px;height:400px")
           #footer
           h2
             | Instruções
@@ -229,6 +239,10 @@ head
           //|  
           //span.label.label-default Label
           form(role='form')
+            .checkbox
+              label
+                input#saveFileCheckbox(type='checkbox')
+                |  Save file
             .form-group
               label(for='exampleInputEmail1') Save file
               input#buttonToggle(type='button', value='ON', onclick='toggle(this);')

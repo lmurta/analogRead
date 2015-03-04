@@ -15,5 +15,5 @@ git clone https://github.com/lmurta/analogRead
 git add .
 
 after file modified
-git commit -m "file modified"
+git commit -am "file modified"
 git push

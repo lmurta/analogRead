@@ -29,6 +29,19 @@ var ArduinoFirmata = require('arduino-firmata');
 var arduino = new ArduinoFirmata().connect();
 var an0,an1,an2,an3,an4,an5 ;
 
+var fs =require('fs');
+var dateformat = require('date-format');
+date = new Date() ;
+
+var fileName = dateformat.asString('yyyyMMddhhmm',date) 
+//= dateFormat(date,"yyyymmddhhMM")
+// date.getFullYear() 
+  + ".csv";
+fs.appendFile(fileName, 'date,A0,A1,A2,A3,A4,A5\n', function (err) {
+
+});
+var timeStamp;
+var dataLog = false;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -89,8 +102,7 @@ arduino.on('connect', function(){
                       ,  arduino_boardVersion   : arduino.boardVersion 
           });
   });
-
-
+  /*
   setInterval(function(){
     an0 = arduino.analogRead(0);
     an1 = arduino.analogRead(1);
@@ -98,13 +110,21 @@ arduino.on('connect', function(){
     an3 = arduino.analogRead(3);
     an4 = arduino.analogRead(4);
     an5 = arduino.analogRead(5);
+    timeStamp = Math.floor(new Date() );
+    console.log(timeStamp);
     //console.log(an0, an1, an2, an3, an4, an5);
-  }, 300);
+  }, 1000);
+*/
 });
-
 io.sockets.on('connection', function(socket){
     //send data to client
     setInterval(function(){
+      an0 = arduino.analogRead(0);
+      an1 = arduino.analogRead(1);
+      an2 = arduino.analogRead(2);
+      an3 = arduino.analogRead(3);
+      an4 = arduino.analogRead(4);
+      an5 = arduino.analogRead(5);
         socket.emit('news', { an0: an0 
                     ,   an1: an1 
                     ,   an2: an2 
@@ -112,7 +132,35 @@ io.sockets.on('connection', function(socket){
                     ,   an4: an4 
                     ,   an5: an5 
         });
-    }, 300);
+      date = new Date() ;
+      //console.log(date.toISOString());
+      if (dataLog){
+        //console.log("save file");
+
+        fs.appendFile(fileName, date.toISOString()+
+          ','+an0+
+          ','+an1+
+          ','+an2+
+          ','+an3+
+          ','+an4+
+          ','+an5+
+          '\n'
+          , function (err) {
+        });
+      }
+    }, 1000);
+    socket.on('saveFile', function (data) {
+      console.log(data);
+      if (data.saveFile == 'true'){
+        dataLog =true;
+        //console.log("save file");
+        
+      }
+      if (data.saveFile == 'false'){
+        dataLog =false;
+        //console.log("don't save file");
+      }
+    });
 });
 
 
