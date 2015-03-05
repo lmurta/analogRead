@@ -33,7 +33,7 @@ var fs =require('fs');
 var dateformat = require('date-format');
 date = new Date() ;
 
-var fileName = dateformat.asString('yyyyMMddhhmm',date) 
+var fileName = "logs/"+ dateformat.asString('yyyyMMddhhmm',date) 
 //= dateFormat(date,"yyyymmddhhMM")
 // date.getFullYear() 
   + ".csv";

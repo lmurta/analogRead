@@ -29,6 +29,7 @@ head
 
     script(type='text/javascript').
       var arduinoPort, arduinoVersion;
+      var pHon =false;
       function toggle(button)      {
        if(document.getElementById("buttonToggle").value=="OFF"){
         socket.emit('button update event', { status: 'OFF' });
@@ -48,6 +49,15 @@ head
             socket.emit('saveFile', { saveFile: 'false' });
           }
         });
+        $('#pHmeterCheckbox').change(function () {
+          if($('#pHmeterCheckbox').is(':checked')){
+            //console.log('save file true');
+            socket.emit('saveFile', { saveFile: 'true' });
+          }else{
+            //console.log('save file false');
+            socket.emit('saveFile', { saveFile: 'false' });
+          }
+        });        
         var socket = io();
         var an0, an1, an2,an3, an4, an5;
         var d0=[], d1=[], d2=[], d3=[], d4=[], d5=[];
@@ -67,13 +77,19 @@ head
           an3 = data.an3;
           an4 = data.an4;
           an5 = data.an5;
-          an5 = an5 * 5.0 /1024 *3.5;
+          if($('#pHmeterCheckbox').is(':checked')){
+            an5 = an5 * 5.0 /1024 *3.5;
+          }
           $('#div_an0').text(an0 +":A0");
           $('#div_an1').text(an1 +":A1");
           $('#div_an2').text(an2 +":A2");
           $('#div_an3').text(an3 +":A3");
           $('#div_an4').text(an4 +":A4");
-          $('#div_an5').text(an5.toFixed(2) +":A5");
+          if($('#pHmeterCheckbox').is(':checked')){
+            $('#div_an5').text(an5.toFixed(2) +":A5");
+          }else{
+            $('#div_an5').text(an5.toFixed(0) +":A5");
+          }
           if(d0.length>totalPoints){
             d0 = d0.splice(1,totalPoints);
             d1 = d1.slice(0-totalPoints);
@@ -81,14 +97,12 @@ head
             d3 = d3.slice(0-totalPoints);
             d4 = d4.slice(0-totalPoints);
             d5 = d5.slice(0-totalPoints);
-
           }
           d0.push([i,an0]);  
           d1.push([i,an1]); 
           d2.push([i,an2]); 
           d3.push([i,an3]); 
           d4.push([i,an4]); 
-
           d5.push([i,an5]); 
           i++;
           update();
@@ -103,35 +117,27 @@ head
           { data: d1, label:'A1'},
           { data: d2, label:'A2'}
         ];
-        /*
-        var plot = $.plot("#placeholder", 
-          //[ getRandomData() ]
-          d
-          , {
-          series: {
-            lineWidth: 5,
-            shadowSize: 3, // Drawing is faster without shadows
-              colors: ["#000000","#d18b2c", "#dba255", "#919733"]
-          },
-          yaxis: {
-            min: 0,
-            max: 104
-          },
-          xaxis: {
-            show: false,
-            mode:'time'
-          }
-        });*/
         function update() {
           //d0=[[1,1],[2,2],[3,3]];
-          var d=[
-            { data: d0, label:'A0'},
-            { data: d1, label:'A1'},
-            { data: d2, label:'A2'},
-            { data: d3, label:'A3'},
-            { data: d4, label:'A4'},
-            { data: d5, label:'A5', yaxis:2, lineWidth: 2}
-          ];
+          if($('#pHmeterCheckbox').is(':checked')){
+            var d=[
+              { data: d0, label:'A0'},
+              { data: d1, label:'A1'},
+              { data: d2, label:'A2'},
+              { data: d3, label:'A3'},
+              { data: d4, label:'A4'},
+              { data: d5, label:'A5', yaxis:2, lineWidth: 2}
+            ];
+          }else{
+            var d=[
+              { data: d0, label:'A0'},
+              { data: d1, label:'A1'},
+              { data: d2, label:'A2'},
+              { data: d3, label:'A3'},
+              { data: d4, label:'A4'},
+              { data: d5, label:'A5'}
+            ];            
+          }
           plot = $.plot("#placeholder", 
             d
             , {
@@ -158,12 +164,8 @@ head
               ]
             }
           });
-            // Since the axes don't change, we don't need to call plot.setupGrid()
           plot.draw();
-          //setTimeout(update, updateInterval);
         }
-        //update();
-        //$("#footer").prepend("Flot " + $.plot.version + " &ndash; "+arduinoVersion + arduinoPort);
       });
 
 
@@ -252,6 +254,10 @@ head
               label
                 input#saveFileCheckbox(type='checkbox')
                 |  Save file
+            .checkbox
+              label
+                input#pHmeterCheckbox(type='checkbox')
+                |  pH on A5 port                
             .form-group
               label(for='exampleInputEmail1') Save file
               input#buttonToggle(type='button', value='ON', onclick='toggle(this);')
