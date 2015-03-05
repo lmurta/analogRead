@@ -119,8 +119,9 @@ head
         ];
         function update() {
           //d0=[[1,1],[2,2],[3,3]];
+          var d;
           if($('#pHmeterCheckbox').is(':checked')){
-            var d=[
+            d=[
               { data: d0, label:'A0'},
               { data: d1, label:'A1'},
               { data: d2, label:'A2'},
@@ -129,7 +130,7 @@ head
               { data: d5, label:'A5', yaxis:2, lineWidth: 2}
             ];
           }else{
-            var d=[
+            d=[
               { data: d0, label:'A0'},
               { data: d1, label:'A1'},
               { data: d2, label:'A2'},
@@ -137,7 +138,7 @@ head
               { data: d4, label:'A4'},
               { data: d5, label:'A5'}
             ];            
-          }
+          };
           plot = $.plot("#placeholder", 
             d
             , {
@@ -150,17 +151,15 @@ head
               shadowSize: 0, // Drawing is faster without shadows
             },
             colors: ["#edc240","#2B65EC", "#cb4b4b", "#4da74d", "#9440ed", "#B2912F"],
-            //yaxis: {
-            //  min: 0,
-            //  max: 1024
-            //},
             yaxes: [  { position: "left" , min: 0, max: 1024 }, 
-                      { position: "right", min: 0, max: 14 } 
+                      { position: "right", min: 0, max: 14, ticks:[1,2,3,4,5,6,7,8,9,10,11,12,13] } 
                   ],
             xaxes: {  show: true },
             grid: {
               markings: [
-                { color: "#f00", lineWidth: 1, yaxis: { from: 512, to: 512 } }
+                { color: "#faa", lineWidth: 1, yaxis: { from: 8 *1024/14, to: 8 *1024/14}  },
+                { color: "#f00", lineWidth: 1, yaxis: { from: 7 *1024/14, to: 7 *1024/14}  },
+                { color: "#faa", lineWidth: 1, yaxis: { from: 6 *1024/14, to: 6 *1024/14}  }
               ]
             }
           });
