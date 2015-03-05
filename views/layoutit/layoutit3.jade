@@ -26,10 +26,14 @@ head
     script(type='text/javascript', src='javascripts/bootstrap.min.js')
     script(type='text/javascript', src='javascripts/scripts.js')
     script(type='text/javascript', src='javascripts/jquery.flot.min.js')
+    script(type='text/javascript', src='javascripts/jquery.flot.time.min.js')
+    //script(type='text/javascript', src='javascripts/jquery.flot.axislabels.js')
+    //script(type='text/javascript', src='javascripts/jquery.flot.tickrotor.js')
 
     script(type='text/javascript').
       var arduinoPort, arduinoVersion;
       var pHon =false;
+      var now;
       function toggle(button)      {
        if(document.getElementById("buttonToggle").value=="OFF"){
         socket.emit('button update event', { status: 'OFF' });
@@ -98,27 +102,28 @@ head
             d4 = d4.slice(0-totalPoints);
             d5 = d5.slice(0-totalPoints);
           }
+          /*
           d0.push([i,an0]);  
           d1.push([i,an1]); 
           d2.push([i,an2]); 
           d3.push([i,an3]); 
           d4.push([i,an4]); 
           d5.push([i,an5]); 
+          */
+          now = ((new Date()).getTime());
+          d0.push([now,an0]);  
+          d1.push([now,an1]); 
+          d2.push([now,an2]); 
+          d3.push([now,an3]); 
+          d4.push([now,an4]); 
+          d5.push([now,an5]); 
           i++;
           update();
           //console.log(d0);
           socket.emit('my other event', { my: 'client do server' });
         });
         var  totalPoints = 300;
-        // Set up the control widget
-        //var updateInterval = 30;
-        var d=[
-          { data: d0, label:'A0'},
-          { data: d1, label:'A1'},
-          { data: d2, label:'A2'}
-        ];
         function update() {
-          //d0=[[1,1],[2,2],[3,3]];
           var d;
           if($('#pHmeterCheckbox').is(':checked')){
             d=[
@@ -139,27 +144,28 @@ head
               { data: d5, label:'A5'}
             ];            
           };
-          plot = $.plot("#placeholder", 
-            d
-            , {
+          plot = $.plot("#placeholder", d , {
             series: {
               lines: {
                 lineWidth: 1,
                 shadowSize: 0,
-                
               },
               shadowSize: 0, // Drawing is faster without shadows
             },
             colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b"],
+            xaxes: [{  
+                      mode: "time",
+                      timeformat: "%H:%M:%S",
+                      show: true,
+                      //rotateTicks: 135,
+            }],
             yaxes: [  { position: "left" , min: 0, max: 1024 }, 
                       { position: "right", min: 0, max: 14, ticks:[1,2,3,4,5,6,7,8,9,10,11,12,13] } 
                   ],
-            xaxes: {  show: true },
             grid: {
               markings: [
-                { color: "#faa", lineWidth: 1, yaxis: { from: 8 *1024/14, to: 8 *1024/14}  },
+                { color: "#fcc", lineWidth: 1, yaxis: { from: 6 *1024/14, to: 8 *1024/14}  },
                 { color: "#f00", lineWidth: 1, yaxis: { from: 7 *1024/14, to: 7 *1024/14}  },
-                { color: "#faa", lineWidth: 1, yaxis: { from: 6 *1024/14, to: 6 *1024/14}  }
               ]
             }
           });
@@ -237,6 +243,7 @@ head
             | Instruções
           p
             | Conectar os sensores às portas analógicas A0-A5
+            | Conectar o pHmetro na porta A5
 
         .col-md-3.column
           #div_an0.analogLabel.colorA0 A0
