@@ -23,8 +23,6 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-
-
 var ArduinoFirmata = require('arduino-firmata');
 var arduino = new ArduinoFirmata().connect();
 var an0,an1,an2,an3,an4,an5 ;
@@ -42,6 +40,7 @@ fs.appendFile(fileName, 'date,A0,A1,A2,A3,A4,A5\n', function (err) {
 });
 var timeStamp;
 var dataLog = false;
+var logInterval = 1000 * 1; //1000 * X segundos
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -102,19 +101,7 @@ arduino.on('connect', function(){
                       ,  arduino_boardVersion   : arduino.boardVersion 
           });
   });
-  /*
-  setInterval(function(){
-    an0 = arduino.analogRead(0);
-    an1 = arduino.analogRead(1);
-    an2 = arduino.analogRead(2);
-    an3 = arduino.analogRead(3);
-    an4 = arduino.analogRead(4);
-    an5 = arduino.analogRead(5);
-    timeStamp = Math.floor(new Date() );
-    console.log(timeStamp);
-    //console.log(an0, an1, an2, an3, an4, an5);
-  }, 1000);
-*/
+
 });
 io.sockets.on('connection', function(socket){
     //send data to client
@@ -148,7 +135,7 @@ io.sockets.on('connection', function(socket){
           , function (err) {
         });
       }
-    }, 1000);
+    }, logInterval);
     socket.on('saveFile', function (data) {
       console.log(data);
       if (data.saveFile == 'true'){
