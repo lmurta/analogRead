@@ -23,8 +23,8 @@ router.get('/layoutit2', function (req, res, next) {
 router.get('/layoutit3', function (req, res, next) {
   res.render('layoutit/layoutit3', { title: "Flot"});
 });
-router.get('/layoutit4', function (req, res, next) {
-  res.render('layoutit/layoutit4', { title: "Flot"});
+router.get('/sensors', function (req, res, next) {
+  res.render('layoutit/sensors', { title: "Sensors"});
 });
 
 module.exports = router;
