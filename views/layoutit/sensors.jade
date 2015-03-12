@@ -74,6 +74,9 @@ head
           arduinoVersion = ArduinoData.arduino_boardVersion;
           $("#footer").prepend("Flot " + $.plot.version + " &ndash; Arduino "+arduinoVersion +" on "+ arduinoPort);
         });
+        socket.on('plotlyConnected', function (plotlyData) {
+          $("#plotly").prepend("Plotly: <a href=" + plotlyData.plotlyLink +">"+ plotlyData.plotlyLink+"</a>");
+        });
         socket.on('news', function (data) {
           an0 = data.an0;
           an1 = data.an1;
@@ -240,6 +243,7 @@ head
           p
           #placeholder.demo-placeholder(style="width:800px;height:400px")
           #footer
+          #plotly
           h2
             | Instruções
           ul
