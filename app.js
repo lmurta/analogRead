@@ -132,11 +132,10 @@ var dateformat = require('date-format');
 var date = new Date() ;
 
 var fileName = "logs/"+ dateformat.asString('yyyyMMddhhmm',date) 
-//= dateFormat(date,"yyyymmddhhMM")
-// date.getFullYear() 
   + ".csv";
 fs.appendFile(fileName, 'date,A0,A1,A2,A3,A4,A5\n', function (err) {
-
+  if (err) throw err;
+  console.log('The "data to append" was appended to file!');
 });
 var timeStamp;
 var dataLog = false;
