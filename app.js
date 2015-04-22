@@ -14,102 +14,7 @@ server.on('listening', onListening);
 var io = require('socket.io').listen(server);
 
 //Plotly
-
-var plotly = require('plotly')('Lmurta','uxj063ncmv');
-var STREAM_TOKEN_0 = 'i4syfw4mxj';
-var STREAM_TOKEN_1 = 'o07wtgg9lj';
-var STREAM_TOKEN_2 = 'f9xh13dg2b';
-var STREAM_TOKEN_3 = 'dh8y3kfiqe';
-var STREAM_TOKEN_4 = 'kyvbcckjmv';
-var STREAM_TOKEN_5 = 've9yeeet4k';
-//colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b"],
-
-var MAX_POINTS = 1000;
-var lineWidth =1.5;
-var initData = [
-       {x: [],y: [],name:"A0",stream:{token: STREAM_TOKEN_0,maxpoints: MAX_POINTS}
-        ,line: {color: "#edc240", width: lineWidth}  , }
-      ,{x: [],y: [],name:"A1",stream:{token: STREAM_TOKEN_1,maxpoints: MAX_POINTS}
-        ,line: {color: "#2B65EC", width: lineWidth}  , }
-      ,{x: [],y: [],name:"A2",stream:{token: STREAM_TOKEN_2,maxpoints: MAX_POINTS}
-        ,line: {color: "#B2912F", width: lineWidth}  , }
-      ,{x: [],y: [],name:"A3",stream:{token: STREAM_TOKEN_3,maxpoints: MAX_POINTS}
-        ,line: {color: "#4da74d", width: lineWidth}  , }
-      ,{x: [],y: [],name:"A4",stream:{token: STREAM_TOKEN_4,maxpoints: MAX_POINTS}
-        ,line: {color: "#9440ed", width: lineWidth}  , }
-      ,{x: [],y: [],name:"A5",stream:{token: STREAM_TOKEN_5,maxpoints: MAX_POINTS}
-        ,line: {color: "#cb4b4b", width: lineWidth}  , }
-];
-var initLayout = {
-    fileopt: 'overwrite',
-    filename: 'CO2Sensors'
-    ,"layout": {
-       title: "CO2 Sensors"
-      ,showlegend: true
-      ,autorange: false
-      ,yaxis: {range: [0, 1024]}
-    }
-
-};
-plotly.plot(initData, initLayout, function (err, msg) {
-    if (err) return console.log(err);
-    console.log(msg);
-
-    io.sockets.on('connection', function(socket){
-      //send data to client
-          socket.emit('plotlyConnected', {
-                         plotlyLink: msg.url 
-                      ,  plotlyX   : "plotlyX" 
-          });
-    });   
-
-    var stream0 = plotly.stream(STREAM_TOKEN_0, function (err, res) {
-        if (err) return console.log(err);
-        console.log(res);
-        clearInterval(loop); // once stream is closed, stop writing
-    });
-    var stream1 = plotly.stream(STREAM_TOKEN_1, function (err, res) {
-        if (err) return console.log(err);
-        console.log(res);
-        clearInterval(loop); // once stream is closed, stop writing
-    });
-    var stream2 = plotly.stream(STREAM_TOKEN_2, function (err, res) {
-        if (err) return console.log(err);
-        clearInterval(loop); // once stream is closed, stop writing
-    });
-    var stream3 = plotly.stream(STREAM_TOKEN_3, function (err, res) {
-        if (err) return console.log(err);
-        clearInterval(loop); // once stream is closed, stop writing
-    });
-    var stream4 = plotly.stream(STREAM_TOKEN_4, function (err, res) {
-        if (err) return console.log(err);
-        clearInterval(loop); // once stream is closed, stop writing
-    });
-    var stream5 = plotly.stream(STREAM_TOKEN_5, function (err, res) {
-        if (err) return console.log(err);
-        clearInterval(loop); // once stream is closed, stop writing
-    });
-
-
-    var i_plotly = 0;
-    var loop = setInterval(function () {
-      var data0 = { x : i_plotly, y : an0 };var streamObject0 = JSON.stringify(data0);
-      var data1 = { x : i_plotly, y : an1 };var streamObject1 = JSON.stringify(data1);
-      var data2 = { x : i_plotly, y : an2 };var streamObject2 = JSON.stringify(data2);
-      var data3 = { x : i_plotly, y : an3 };var streamObject3 = JSON.stringify(data3);
-      var data4 = { x : i_plotly, y : an4 };var streamObject4 = JSON.stringify(data4);
-      var data5 = { x : i_plotly, y : an5 };var streamObject5 = JSON.stringify(data5);
-
-      stream0.write(streamObject0+'\n');
-      stream1.write(streamObject1+'\n');
-      stream2.write(streamObject2+'\n');
-      stream3.write(streamObject3+'\n');
-      stream4.write(streamObject4+'\n');
-      stream5.write(streamObject5+'\n');
-      i_plotly++;
-    }, logInterval);
-});
-
+//deleted...
 //Plotly
 
 var path = require('path');
@@ -139,8 +44,7 @@ fs.appendFile(fileName, 'date,A0,A1,A2,A3,A4,A5\n', function (err) {
 });
 var timeStamp;
 var dataLog = false;
-var logInterval = 1000 * 1; //1000 * X segundos
-
+var logInterval = 1000 * 7; //1000 * X segundos
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -202,7 +106,8 @@ arduino.on('connect', function(){
 });
 io.sockets.on('connection', function(socket){
     //send data to client
-    setInterval(function(){
+   socket.emit('serverStartTicker', { logInterval: logInterval });
+   setInterval(function(){
       an0 = arduino.analogRead(0);
       an1 = arduino.analogRead(1);
       an2 = arduino.analogRead(2);
@@ -216,7 +121,7 @@ io.sockets.on('connection', function(socket){
                     ,   an4: an4 
                     ,   an5: an5 
         });
-
+        socket.emit('serverStartTicker', { logInterval: logInterval });
       date = new Date() ;
       //console.log(date.toISOString());
       if (dataLog){

@@ -34,6 +34,7 @@ head
       var arduinoPort, arduinoVersion;
       var pHon =false;
       var now;
+      var timeTick =0;
       function toggle(button)      {
        if(document.getElementById("buttonToggle").value=="OFF"){
         socket.emit('button update event', { status: 'OFF' });
@@ -42,7 +43,13 @@ head
         socket.emit('button update event', { status: 'ON' });
        }
       }
+      function startTicker() {
+          setInterval(function () {
+              $('#div_tick').text(timeTick-- +":t");
+          }, 1000);
+      }
       $(function() {
+        startTicker();
         //$('.saveFileCheckbox').prop('checked', true);
         $('#saveFileCheckbox').change(function () {
           if($('#saveFileCheckbox').is(':checked')){
@@ -67,7 +74,10 @@ head
         var d0=[], d1=[], d2=[], d3=[], d4=[], d5=[];
         var totalPoints = 10;
         var i =0;
-        
+        socket.on('serverStartTicker', function (interval) {
+          console.log(interval.logInterval);
+          timeTick = interval.logInterval /1000;
+        });        
         socket.on('arduinoConnected', function (ArduinoData) {
           //console.log(ArduinoData.arduino_serialport_name);
           arduinoPort    = ArduinoData.arduino_serialport_name;
@@ -253,6 +263,7 @@ head
              | Conectar o pHmetro na porta A5
 
         .col-md-2.column
+          #div_tick.analogLabel.colorTick :t
           #div_an0.analogLabel.colorA0 A0
           #div_an1.analogLabel.colorA1 A1
           #div_an2.analogLabel.colorA2 A2
