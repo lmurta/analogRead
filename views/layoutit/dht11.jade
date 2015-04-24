@@ -71,7 +71,7 @@ head
         });        
         var socket = io();
         var H,T,an0, an1, an2,an3, an4, an5;
-        var d0=[], d1=[], d2=[], d3=[], d4=[], d5=[];
+        var dH=[],dT=[], d0=[], d1=[], d2=[], d3=[], d4=[], d5=[];
         var totalPoints = 10;
         var i =0;
         socket.on('serverStartTicker', function (interval) {
@@ -111,6 +111,8 @@ head
             d3 = d3.slice(0-totalPoints);
             d4 = d4.slice(0-totalPoints);
             d5 = d5.slice(0-totalPoints);
+            dT = dT.slice(0-totalPoints);
+            dH = dH.slice(0-totalPoints);
           }
           /*
           d0.push([i,an0]);  
@@ -127,6 +129,8 @@ head
           d3.push([now,an3]); 
           d4.push([now,an4]); 
           d5.push([now,an5]); 
+          dH.push([now,H]); 
+          dT.push([now,T]); 
           i++;
           update();
           //console.log(d0);
@@ -135,25 +139,16 @@ head
         var  totalPoints = 300;
         function update() {
           var d;
-          if($('#pHmeterCheckbox').is(':checked')){
             d=[
               { data: d0, label:'A0'},
               { data: d1, label:'A1'},
               { data: d2, label:'A2'},
               { data: d3, label:'A3'},
               { data: d4, label:'A4'},
-              { data: d5, label:'A5', yaxis:2, lineWidth: 2}
+              { data: d5, label:'A5'},
+              { data: dH, label:'H', yaxis:2, lineWidth: 4,lines: { show: true },points: { show: true }},
+              { data: dT, label:'T', yaxis:2, lineWidth: 2,lines: { show: true },points: { show: true }}
             ];
-          }else{
-            d=[
-              { data: d0, label:'A0'},
-              { data: d1, label:'A1'},
-              { data: d2, label:'A2'},
-              { data: d3, label:'A3'},
-              { data: d4, label:'A4'},
-              { data: d5, label:'A5'}
-            ];            
-          };
           plot = $.plot("#placeholder", d , {
             series: {
               lines: {
@@ -162,7 +157,7 @@ head
               },
               shadowSize: 0, // Drawing is faster without shadows
             },
-            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b"],
+            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#ffaaaa", "#ff6666"],
             xaxes: [{  
                       mode: "time",
                       timeformat: "%H:%M:%S",
@@ -171,12 +166,13 @@ head
                       //rotateTicks: 135,
             }],
             yaxes: [  { position: "left" , min: 0, max: 1024 }, 
-                      { position: "right", min: 0, max: 14, ticks:[1,2,3,4,5,6,7,8,9,10,11,12,13] } 
+                      { position: "right", min: 0, max: 100,
+                       ticks:[15,20,25,30,50] 
+                     } 
                   ],
             grid: {
               markings: [
-                { color: "#fcc", lineWidth: 1, yaxis: { from: 6 *1024/14, to: 8 *1024/14}  },
-                { color: "#f00", lineWidth: 1, yaxis: { from: 7 *1024/14, to: 7 *1024/14}  },
+                { color: "#fcc", lineWidth: 1, yaxis: { from: 20 *1024/100, to: 25 *1024/100}  },
               ]
             }
           });
@@ -267,8 +263,8 @@ head
           #div_an3.analogLabel.colorA3 A3
           #div_an4.analogLabel.colorA4 A4
           #div_an5.analogLabel.colorA5 A5
-          #div_H.analogLabel.colorTick H
-          #div_T.analogLabel.colorTick T
+          #div_H.analogLabel.colorH H
+          #div_T.analogLabel.colorT T
           //span.label.label-default Label
           //|  
           //span.label.label-default Label
