@@ -26,5 +26,8 @@ router.get('/layoutit3', function (req, res, next) {
 router.get('/sensors', function (req, res, next) {
   res.render('layoutit/sensors', { title: "Sensors"});
 });
+router.get('/dht11', function (req, res, next) {
+  res.render('layoutit/dht11', { title: "Sensors"});
+});
 
 module.exports = router;
