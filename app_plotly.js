@@ -1,4 +1,3 @@
-'use strict';
 var express = require('express');
 var debug = require('debug')('analogread_02:server');
 var http = require('http');
@@ -12,10 +11,6 @@ server.listen(app.get('port'));
 server.on('error', onError);
 server.on('listening', onListening);
 var io = require('socket.io').listen(server);
-
-//Plotly
-//deleted...
-//Plotly
 
 var path = require('path');
 //var io = require('socket.io').listen(app.listen());
@@ -34,17 +29,19 @@ var an0,an1,an2,an3,an4,an5 ;
 
 var fs =require('fs');
 var dateformat = require('date-format');
-var date = new Date() ;
+date = new Date() ;
 
 var fileName = "logs/"+ dateformat.asString('yyyyMMddhhmm',date) 
+//= dateFormat(date,"yyyymmddhhMM")
+// date.getFullYear() 
   + ".csv";
 fs.appendFile(fileName, 'date,A0,A1,A2,A3,A4,A5\n', function (err) {
-  if (err) throw err;
-  console.log('The "data to append" was appended to file!');
+
 });
 var timeStamp;
 var dataLog = false;
-var logInterval = 1000 * 3; //1000 * X segundos
+var logInterval = 1000 * 1; //1000 * X segundos
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -96,6 +93,7 @@ app.use(function(err, req, res, next) {
 arduino.on('connect', function(){
   console.log("connect!! "+arduino.serialport_name);
   console.log("board version: "+arduino.boardVersion);
+
   io.sockets.on('connection', function(socket){
       //send data to client
           socket.emit('arduinoConnected', {
@@ -103,11 +101,11 @@ arduino.on('connect', function(){
                       ,  arduino_boardVersion   : arduino.boardVersion 
           });
   });
+
 });
 io.sockets.on('connection', function(socket){
     //send data to client
-   socket.emit('serverStartTicker', { logInterval: logInterval });
-   setInterval(function(){
+    setInterval(function(){
       an0 = arduino.analogRead(0);
       an1 = arduino.analogRead(1);
       an2 = arduino.analogRead(2);
@@ -121,7 +119,6 @@ io.sockets.on('connection', function(socket){
                     ,   an4: an4 
                     ,   an5: an5 
         });
-        socket.emit('serverStartTicker', { logInterval: logInterval });
       date = new Date() ;
       //console.log(date.toISOString());
       if (dataLog){

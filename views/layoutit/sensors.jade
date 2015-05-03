@@ -45,7 +45,10 @@ head
       }
       function startTicker() {
           setInterval(function () {
-              $('#div_tick').text(timeTick-- +":t");
+            timeTick--;
+            if(timeTick <0){timeTick=0;}
+              $('#div_tick').text(timeTick +":t");
+            }
           }, 1000);
       }
       $(function() {
