@@ -126,52 +126,16 @@ sp.on("data", function (data) {
     }
   }
 
-  
-  /*
-  var start = data.indexOf("[");
-  var end = data.indexOf("]");
-  //console.log(end);
-  if (start===0 && end >0){
-    data =data.slice(start+1,end);
-    var serialData = data.split("|");
-    //console.log(serialData);
-    var s1 = serialData[0]; var s2 =s1.split(":");  H = s2[1];
-    s1 = serialData[1]; var s2 =s1.split(":");  T = s2[1];
-    s1 = serialData[2]; var s2 =s1.split(":");  A0 = s2[1];
-    s1 = serialData[3]; var s2 =s1.split(":");  A1 = s2[1];
-    s1 = serialData[4]; var s2 =s1.split(":");  A2 = s2[1];
-    s1 = serialData[5]; var s2 =s1.split(":");  A3 = s2[1];
-    s1 = serialData[6]; var s2 =s1.split(":");  A4 = s2[1];
-    s1 = serialData[7]; var s2 =s1.split(":");  A5 = s2[1];
-    console.log("A5:"+A5);
 
-  }
-  */
 });
 io.sockets.on('connection', function(socket){
     //send data to client
    socket.emit('serverStartTicker', { logInterval: logInterval });
 
    setInterval(function(){
-/*
-      an0 = arduino.analogRead(0);
-      an1 = arduino.analogRead(1);
-      an2 = arduino.analogRead(2);
-      an3 = arduino.analogRead(3);
-      an4 = arduino.analogRead(4);
-      an5 = arduino.analogRead(5);
-*/
+
       socket.emit('new_data', new_data);
-        /*socket.emit('news', { 
-                        H: H 
-                    ,   T : T
-                    ,   A0: A0 
-                    ,   A1: A1 
-                    ,   A2: A2 
-                    ,   A3: A3 
-                    ,   A4: A4 
-                    ,   A5: A5 
-        });*/
+
         socket.emit('serverStartTicker', { logInterval: logInterval });
       date = new Date() ;
       //console.log(date.toISOString());
