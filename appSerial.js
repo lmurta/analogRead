@@ -35,11 +35,12 @@ var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
 var sp = new SerialPort("/dev/ttyUSB0", {
   baudrate: 57600,
-  parser: serialport.parsers.readline("\n")
+  parser: serialport.parsers.readline("\r\n")
 });
 
-var H,T, an0,an1,an2,an3,an4,an5 ;
-
+var H,T, A0,A1,A2,A3,A4,A5 ;
+var config_pins = require('./config_pins');
+  var new_data = {};
 
 var fs =require('fs');
 var dateformat = require('date-format');
@@ -117,6 +118,16 @@ arduino.on('connect', function(){
 */
 sp.on("data", function (data) {
   console.log(data);
+  var jsonObj = JSON.parse(data);
+  for(var config_pins_key in config_pins){
+    if (typeof jsonObj[config_pins_key] !== 'undefined'){
+        console.log(config_pins[config_pins_key] +"="+ jsonObj[config_pins_key]); 
+        new_data[config_pins[config_pins_key]] = jsonObj[config_pins_key];
+    }
+  }
+
+  
+  /*
   var start = data.indexOf("[");
   var end = data.indexOf("]");
   //console.log(end);
@@ -126,15 +137,16 @@ sp.on("data", function (data) {
     //console.log(serialData);
     var s1 = serialData[0]; var s2 =s1.split(":");  H = s2[1];
     s1 = serialData[1]; var s2 =s1.split(":");  T = s2[1];
-    s1 = serialData[2]; var s2 =s1.split(":");  an0 = s2[1];
-    s1 = serialData[3]; var s2 =s1.split(":");  an1 = s2[1];
-    s1 = serialData[4]; var s2 =s1.split(":");  an2 = s2[1];
-    s1 = serialData[5]; var s2 =s1.split(":");  an3 = s2[1];
-    s1 = serialData[6]; var s2 =s1.split(":");  an4 = s2[1];
-    s1 = serialData[7]; var s2 =s1.split(":");  an5 = s2[1];
-    console.log("A5:"+an5);
+    s1 = serialData[2]; var s2 =s1.split(":");  A0 = s2[1];
+    s1 = serialData[3]; var s2 =s1.split(":");  A1 = s2[1];
+    s1 = serialData[4]; var s2 =s1.split(":");  A2 = s2[1];
+    s1 = serialData[5]; var s2 =s1.split(":");  A3 = s2[1];
+    s1 = serialData[6]; var s2 =s1.split(":");  A4 = s2[1];
+    s1 = serialData[7]; var s2 =s1.split(":");  A5 = s2[1];
+    console.log("A5:"+A5);
 
   }
+  */
 });
 io.sockets.on('connection', function(socket){
     //send data to client
@@ -149,16 +161,17 @@ io.sockets.on('connection', function(socket){
       an4 = arduino.analogRead(4);
       an5 = arduino.analogRead(5);
 */
-        socket.emit('news', { 
+      socket.emit('new_data', new_data);
+        /*socket.emit('news', { 
                         H: H 
                     ,   T : T
-                    ,   an0: an0 
-                    ,   an1: an1 
-                    ,   an2: an2 
-                    ,   an3: an3 
-                    ,   an4: an4 
-                    ,   an5: an5 
-        });
+                    ,   A0: A0 
+                    ,   A1: A1 
+                    ,   A2: A2 
+                    ,   A3: A3 
+                    ,   A4: A4 
+                    ,   A5: A5 
+        });*/
         socket.emit('serverStartTicker', { logInterval: logInterval });
       date = new Date() ;
       //console.log(date.toISOString());
@@ -166,12 +179,12 @@ io.sockets.on('connection', function(socket){
         //console.log("save file");
 
         fs.appendFile(fileName, date.toISOString()+
-          ','+an0+
-          ','+an1+
-          ','+an2+
-          ','+an3+
-          ','+an4+
-          ','+an5+
+          ','+A0+
+          ','+A1+
+          ','+A2+
+          ','+A3+
+          ','+A4+
+          ','+A5+
           ','+H+
           ','+T+
           '\n'
