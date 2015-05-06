@@ -40,7 +40,47 @@ var sp = new SerialPort("/dev/ttyUSB0", {
 
 var H,T, A0,A1,A2,A3,A4,A5 ;
 var config_pins = require('./config_pins');
-  var new_data = {};
+var new_data = {};
+
+
+//two points are taken from the curve. 
+//with these two points, a line is formed which is "approximately equivalent"
+//to the original curve. 
+//data format:{ x, y, slope}; point1: (lg200, 0.21), point2: (lg10000, -0.59) 
+var pcurves = new Array;
+var MQ2_GAS_LPG     =  0; pcurves[MQ2_GAS_LPG]     = [2.3,0.21,-0.47];
+var MQ2_GAS_CO      =  1; pcurves[MQ2_GAS_CO]      = [2.3,0.72,-0.34];
+var MQ2_GAS_SMOKE   =  2; pcurves[MQ2_GAS_SMOKE]   = [2.3,0.53,-0.44];
+var MQ2_GAS_H2      =  3; pcurves[MQ2_GAS_H2]      = [2.3,0.33,-0.48];
+var MQ2_GAS_CH4     =  4; pcurves[MQ2_GAS_CH4]     = [2.3,0.48,-0.36];
+var MQ2_GAS_ETH     =  5; pcurves[MQ2_GAS_ETH]     = [2.3,0.45,-0.36];
+var MQ2_GAS_PROPANE =  6; pcurves[MQ2_GAS_PROPANE] = [2.3,0.24,-0.46];
+
+var MQ4_GAS_CO      =  7; pcurves[MQ4_GAS_CO]      = [2.3,0.62,-0.07];
+var MQ4_GAS_ETH     =  8; pcurves[MQ4_GAS_ETH]     = [2.3,0.60,-0.09];
+var MQ4_GAS_SMOKE   =  9; pcurves[MQ4_GAS_SMOKE]   = [2.3,0.59,-0.12];
+var MQ4_GAS_H2      = 10; pcurves[MQ4_GAS_H2]      = [2.3,0.57,-0.18];
+var MQ4_GAS_LPG     = 11; pcurves[MQ4_GAS_LPG]     = [2.3,0.41,-0.32];
+var MQ4_GAS_CH4     = 12; pcurves[MQ4_GAS_CH4]     = [2.3,0.24,-0.35];
+     
+var MQ6_GAS_CO      = 13; pcurves[MQ6_GAS_CO]      = [2.3,0.95,-0.08];
+var MQ6_GAS_ETH     = 14; pcurves[MQ6_GAS_ETH]     = [2.3,0.90,-0.16];
+var MQ6_GAS_H2      = 15; pcurves[MQ6_GAS_H2]      = [2.3,0.76,-0.26];
+var MQ6_GAS_CH4     = 16; pcurves[MQ6_GAS_CH4]     = [2.3,0.41,-0.40];
+var MQ6_GAS_LPG     = 17; pcurves[MQ6_GAS_LPG]     = [2.3,0.32,-0.43];
+
+var MQ2_RL_VALUE                = 5;     //define the load resistance on the board, in kilo ohms
+var MQ4_RL_VALUE                = 20;
+var MQ6_RL_VALUE                = 20;
+
+var MQ2_RO_CLEAN_AIR_FACTOR     = 9.83;  //RO_CLEAR_AIR_FACTOR=(Sensor resistance in clean air)/RO,
+                                                     //which is derived from the chart in datasheet
+ 
+//Ro is initialized to 10 kilo ohms
+var           MQ2_Ro           =  3.56; //valor medido experimentalmente
+var           MQ4_Ro           =  13.6; //valor medido experimentalmente
+var           MQ6_Ro           =  5.68; //valor medido experimentalmente
+
 
 var fs =require('fs');
 var dateformat = require('date-format');
@@ -103,31 +143,122 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-/*
-arduino.on('connect', function(){
-  console.log("connect!! "+arduino.serialport_name);
-  console.log("board version: "+arduino.boardVersion);
-  io.sockets.on('connection', function(socket){
-      //send data to client
-          socket.emit('arduinoConnected', {
-                         arduino_serialport_name: arduino.serialport_name 
-                      ,  arduino_boardVersion   : arduino.boardVersion 
-          });
-  });
-});
-*/
+
 sp.on("data", function (data) {
-  console.log(data);
+  //console.log(data);
   var jsonObj = JSON.parse(data);
   for(var config_pins_key in config_pins){
     if (typeof jsonObj[config_pins_key] !== 'undefined'){
-        console.log(config_pins[config_pins_key] +"="+ jsonObj[config_pins_key]); 
+        //console.log(config_pins[config_pins_key] +"="+ jsonObj[config_pins_key]); 
         new_data[config_pins[config_pins_key]] = jsonObj[config_pins_key];
+        if (config_pins[config_pins_key] == "MQ2"){ process_MQ2(jsonObj[config_pins_key]); }
+        if (config_pins[config_pins_key] == "MQ4"){ process_MQ4(jsonObj[config_pins_key]); }
+        if (config_pins[config_pins_key] == "MQ6"){ process_MQ6(jsonObj[config_pins_key]); }
     }
   }
 
 
 });
+function process_MQ2(analogRead){
+  console.log("Processing MQ2 = "+analogRead);
+  var rs = MQ_MQRead(MQ2_RL_VALUE,analogRead);
+  //console.log("RS="+rs);
+  var MQ2_LPG     = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_LPG);
+  var MQ2_CO      = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_CO);
+  var MQ2_SMOKE   = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_SMOKE);
+  var MQ2_H2      = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_H2);
+  var MQ2_CH4     = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_CH4);
+  var MQ2_ETH     = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_ETH);
+  var MQ2_PROPANE = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_PROPANE);
+
+  console.log("LPG="      + MQ2_LPG.toFixed(2) + " "
+              +"CO="      + MQ2_CO.toFixed(2) + " "
+              +"SMOKE="   + MQ2_SMOKE.toFixed(2) + " "
+              +"H2="      + MQ2_H2.toFixed(2) + " "
+              +"CH4="     + MQ2_CH4.toFixed(2) + " "
+              +"ETH="     + MQ2_ETH.toFixed(2) + " "
+              +"Propane=" + MQ2_PROPANE.toFixed(2) + " "
+              );
+}
+function process_MQ4(analogRead){
+  console.log("Processing MQ4 = "+analogRead);
+  var rs = MQ_MQRead(MQ4_RL_VALUE,analogRead);
+  //console.log("RS="+rs);
+  var MQ4_LPG     = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_LPG);
+  var MQ4_CO      = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_CO);
+  var MQ4_SMOKE   = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_SMOKE);
+  var MQ4_H2      = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_H2);
+  var MQ4_CH4     = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_CH4);
+  var MQ4_ETH     = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_ETH);
+
+  console.log("LPG="      + MQ4_LPG.toFixed(2) + " "
+              +"CO="      + MQ4_CO.toFixed(2) + " "
+              +"SMOKE="   + MQ4_SMOKE.toFixed(2) + " "
+              +"H2="      + MQ4_H2.toFixed(2) + " "
+              +"CH4="     + MQ4_CH4.toFixed(2) + " "
+              +"ETH="     + MQ4_ETH.toFixed(2) + " "
+              );
+}
+function process_MQ6(analogRead){
+  console.log("Processing MQ6 = "+analogRead);
+  var rs = MQ_MQRead(MQ6_RL_VALUE,analogRead);
+  //console.log("RS="+rs);
+  var MQ6_LPG     = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_LPG);
+  var MQ6_CO      = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_CO);
+  var MQ6_H2      = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_H2);
+  var MQ6_CH4     = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_CH4);
+  var MQ6_ETH     = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_ETH);
+
+  console.log("LPG="      + MQ6_LPG.toFixed(2) + " "
+              +"CO="      + MQ6_CO.toFixed(2) + " "
+              +"H2="      + MQ6_H2.toFixed(2) + " "
+              +"CH4="     + MQ6_CH4.toFixed(2) + " "
+              +"ETH="     + MQ6_ETH.toFixed(2) + " "
+              );
+}
+
+/*****************************  MQRead *********************************************
+Input:   mq_pin - analog channel
+Output:  Rs of the sensor
+Remarks: This function use MQResistanceCalculation to caculate the sensor resistenc (Rs).
+         The Rs changes as the sensor is in the different consentration of the target
+         gas. The sample times and the time interval between samples could be configured
+         by changing the definition of the macros.
+************************************************************************************/ 
+function MQ_MQRead(RL_VALUE,raw_adc){
+  var i;
+  var rs=0.0;
+  //rs = MQ_MQResistanceCalculation(raw_adc);
+  rs = RL_VALUE*(1023-raw_adc)/raw_adc;
+  return rs;  
+}
+/****************** MQResistanceCalculation ****************************************
+Input:   raw_adc - raw value read from adc, which represents the voltage
+Output:  the calculated sensor resistance
+Remarks: The sensor and the load resistor forms a voltage divider. Given the voltage
+         across the load resistor and its resistance, the resistance of the sensor
+         could be derived.
+************************************************************************************/ 
+//function MQ_MQResistanceCalculation( raw_adc){
+  //return ( (MQ2_RL_VALUE*(1023-raw_adc)/raw_adc));
+//}
+/*****************************  MQGetPercentage **********************************
+Input:   rs_ro_ratio - Rs divided by Ro
+         pcurve      - pointer to the curve of the target gas
+Output:  ppm of the target gas
+Remarks: By using the slope and a point of the line. The x(logarithmic value of ppm) 
+         of the line could be derived if y(rs_ro_ratio) is provided. As it is a 
+         logarithmic coordinate, power of 10 is used to convert the result to non-logarithmic 
+         value.
+************************************************************************************/ 
+function  MQ_MQGetPercentage( rs_ro_ratio, curva){
+
+  var pcurve = pcurves[curva];
+  var percent =(Math.pow(10,( ((Math.log(rs_ro_ratio)-pcurve[1])/pcurve[2]) + pcurve[0])));
+  return percent;
+}
+
+
 io.sockets.on('connection', function(socket){
     //send data to client
    socket.emit('serverStartTicker', { logInterval: logInterval });

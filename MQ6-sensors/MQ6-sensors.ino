@@ -10,7 +10,7 @@ Note:    This piece of source code is supposed to be used as a demostration ONLY
 ************************************************************************************/
 
 /************************Hardware Related Macros************************************/
-#define         MQ_PIN                       (0)     //define which analog input channel you are going to use
+#define         MQ_PIN                       (5)     //define which analog input channel you are going to use
 #define         RL_VALUE                     (20)    //define the load resistance on the board, in kilo ohms
 #define         RO_CLEAN_AIR_FACTOR          (10)    //RO_CLEAR_AIR_FACTOR=(Sensor resistance in clean air)/RO,
                                                      //which is derived from the chart in datasheet
@@ -40,7 +40,7 @@ float           Ro           =  10;                 //Ro is initialized to 10 ki
 
 void setup()
 {
-  Serial.begin(9600);                               //UART setup, baudrate = 9600bps
+  Serial.begin(57600);                               //UART setup, baudrate = 9600bps
   Serial.print("Calibrating...\n");                
   Ro = MQCalibration(MQ_PIN);                       //Calibrating the sensor. Please make sure the sensor is in clean air 
                                                     //when you perform the calibration                    
