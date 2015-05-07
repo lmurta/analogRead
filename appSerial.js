@@ -156,7 +156,10 @@ app.use(function(err, req, res, next) {
 
 sp.on("data", function (data) {
   //console.log(data);
-  var jsonObj = JSON.parse(data);
+  var re = /\0/g; //cleanup null characters
+  var str = data.toString().replace(re, "");
+
+  var jsonObj = JSON.parse(str);
   for(var config_pins_key in config_pins){
     if (typeof jsonObj[config_pins_key] !== 'undefined'){
         //console.log(config_pins[config_pins_key] +"="+ jsonObj[config_pins_key]); 
