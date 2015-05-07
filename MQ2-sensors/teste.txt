@@ -1,0 +1,53 @@
+======================Teste com o programa de exemplo do arduino
+Calibrating...
+Calibration is done...
+Ro=3.56kohm
+LPG:0ppm    CO:0ppm    SMOKE:0ppm
+LPG:0ppm    CO:0ppm    SMOKE:0ppm
+LPG:0ppm    CO:0ppm    SMOKE:0ppm
+
+LPG:0ppm    CO:0ppm    SMOKE:0ppm
+LPG:0ppm    CO:0ppm    SMOKE:0ppm
+LPG:0ppm    CO:0ppm    SMOKE:0ppm
+LPG:0ppm    CO:0ppm    SMOKE:0ppm
+LPG:0ppm    CO:0ppm    SMOKE:0ppm
+LPG:0ppm    CO:0ppm    SMOKE:0ppm  =====> Abri o butijão de gás perto do sensor
+LPG:4ppm    CO:93ppm    SMOKE:57ppm
+LPG:16ppm    CO:231ppm    SMOKE:86ppm
+LPG:19ppm    CO:276ppm    SMOKE:98ppm
+LPG:21ppm    CO:312ppm    SMOKE:108ppm
+LPG:23ppm    CO:332ppm    SMOKE:108ppm
+LPG:23ppm    CO:337ppm    SMOKE:111ppm
+LPG:24ppm    CO:339ppm    SMOKE:111ppm
+LPG:23ppm    CO:318ppm    SMOKE:100ppm
+LPG:18ppm    CO:211ppm    SMOKE:69ppm
+LPG:13ppm    CO:129ppm    SMOKE:47ppm
+LPG:9ppm    CO:83ppm    SMOKE:34ppm
+LPG:7ppm    CO:56ppm    SMOKE:26ppm
+LPG:5ppm    CO:43ppm    SMOKE:20ppm
+LPG:4ppm    CO:29ppm    SMOKE:15ppm
+LPG:3ppm    CO:22ppm    SMOKE:13ppm
+LPG:2ppm    CO:16ppm    SMOKE:10ppm
+LPG:2ppm    CO:11ppm    SMOKE:7ppm
+
+===========================teste com o programa node.js
+LPG=0.0008229436243142082 ppm
+LPG=0.0007247318908138617 ppm
+LPG=0.0007725441393889879 ppm
+LPG=0.0007247318908138617 ppm
+LPG=0.0007247318908138617 ppm
+LPG=0.0007247318908138617 ppm
+LPG=0.0007725441393889879 ppm
+LPG=0.0007725441393889879 ppm
+LPG=0.0007725441393889879 ppm
+LPG=0.0007725441393889879 ppm =============liguei o butijão
+LPG=12.809474437543052 ppm
+LPG=15.333320670820333 ppm
+LPG=17.27407927491565 ppm
+LPG=15.95569088282381 ppm
+LPG=6.142544053614651 ppm
+LPG=3.619610479392169 ppm
+LPG=2.286722757558243 ppm
+LPG=1.6308284705695804 ppm
+LPG=1.557864699150611 ppm
+LPG=0.9301917996082857 ppm

@@ -13,10 +13,6 @@ server.on('error', onError);
 server.on('listening', onListening);
 var io = require('socket.io').listen(server);
 
-//Plotly
-//deleted...
-//Plotly
-
 var path = require('path');
 //var io = require('socket.io').listen(app.listen());
 
@@ -41,6 +37,7 @@ var sp = new SerialPort("/dev/ttyUSB0", {
 var H,T, A0,A1,A2,A3,A4,A5 ;
 var config_pins = require('./config_pins');
 var new_data = {};
+var new_CO2_data = {};
 
 
 //two points are taken from the curve. 
@@ -68,6 +65,19 @@ var MQ6_GAS_ETH     = 14; pcurves[MQ6_GAS_ETH]     = [2.3,0.90,-0.16];
 var MQ6_GAS_H2      = 15; pcurves[MQ6_GAS_H2]      = [2.3,0.76,-0.26];
 var MQ6_GAS_CH4     = 16; pcurves[MQ6_GAS_CH4]     = [2.3,0.41,-0.40];
 var MQ6_GAS_LPG     = 17; pcurves[MQ6_GAS_LPG]     = [2.3,0.32,-0.43];
+
+
+var     MG811_DC_GAIN = 8.5;
+//These two values differ from sensor to sensor. user should derermine this value.
+var         MG811_ZERO_POINT_VOLTAGE  = 0.220; //define the output of the sensor in volts when the concentration of CO2 is 400PPM
+var         MG811_REACTION_VOLTAGE    = 0.020; //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+//two points are taken from the curve.//with these two points, a line is formed which is
+//"approximately equivalent" to the original curve.
+//data format:{ x, y, slope}; point1: (lg400, 0.324), point2: (lg4000, 0.280)
+//slope = ( reaction voltage ) / (log400 –log1000)
+//float           MG811_CO2Curve[3]  =  {2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))};
+var MG811_GAS_CO2   = 18; pcurves[MG811_GAS_CO2]   =  [2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))];
+
 
 var MQ2_RL_VALUE                = 5;     //define the load resistance on the board, in kilo ohms
 var MQ4_RL_VALUE                = 20;
@@ -154,6 +164,8 @@ sp.on("data", function (data) {
         if (config_pins[config_pins_key] == "MQ2"){ process_MQ2(jsonObj[config_pins_key]); }
         if (config_pins[config_pins_key] == "MQ4"){ process_MQ4(jsonObj[config_pins_key]); }
         if (config_pins[config_pins_key] == "MQ6"){ process_MQ6(jsonObj[config_pins_key]); }
+        if (config_pins[config_pins_key] == "MG811"){ process_MG811(jsonObj[config_pins_key]); }
+
     }
   }
 
@@ -203,17 +215,28 @@ function process_MQ6(analogRead){
   console.log("Processing MQ6 = "+analogRead);
   var rs = MQ_MQRead(MQ6_RL_VALUE,analogRead);
   //console.log("RS="+rs);
-  var MQ6_LPG     = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_LPG);
-  var MQ6_CO      = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_CO);
-  var MQ6_H2      = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_H2);
-  var MQ6_CH4     = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_CH4);
-  var MQ6_ETH     = MQ_MQGetPercentage(rs/MQ6_Ro,MQ6_GAS_ETH);
+  var MQ6_LPG     = MQ_MQGetPercentage(rs/MQ6_Ro, MQ6_GAS_LPG);
+  var MQ6_CO      = MQ_MQGetPercentage(rs/MQ6_Ro, MQ6_GAS_CO);
+  var MQ6_H2      = MQ_MQGetPercentage(rs/MQ6_Ro, MQ6_GAS_H2);
+  var MQ6_CH4     = MQ_MQGetPercentage(rs/MQ6_Ro, MQ6_GAS_CH4);
+  var MQ6_ETH     = MQ_MQGetPercentage(rs/MQ6_Ro, MQ6_GAS_ETH);
 
   console.log("LPG="      + MQ6_LPG.toFixed(2) + " "
               +"CO="      + MQ6_CO.toFixed(2) + " "
               +"H2="      + MQ6_H2.toFixed(2) + " "
               +"CH4="     + MQ6_CH4.toFixed(2) + " "
               +"ETH="     + MQ6_ETH.toFixed(2) + " "
+              );
+}
+function process_MG811(analogRead){
+  var volts = analogRead * 5 / 1024 ;
+  //console.log("Processing MG811 = "+analogRead + " V="+volts);
+  
+  //var rs = MQ_MQRead(MQ6_RL_VALUE,analogRead);
+  //console.log("RS="+rs);
+  var MG811_CO2     = MG811_MGGetPercentage(volts, MG811_GAS_CO2);
+  new_CO2_data["MG811_CO2"] = MG811_CO2.toFixed(2);
+  console.log("MG811_CO2="      + MG811_CO2.toFixed(2) + " "
               );
 }
 
@@ -257,6 +280,25 @@ function  MQ_MQGetPercentage( rs_ro_ratio, curva){
   var percent =(Math.pow(10,( ((Math.log(rs_ro_ratio)-pcurve[1])/pcurve[2]) + pcurve[0])));
   return percent;
 }
+/*****************************  MQGetPercentage **********************************
+Input:   volts   - SEN-000007 output measured in volts
+         pcurve  - pointer to the curve of the target gas
+Output:  ppm of the target gas
+Remarks: By using the slope and a point of the line. The x(logarithmic value of ppm)
+         of the line could be derived if y(MG-811 output) is provided. As it is a
+         logarithmic coordinate, power of 10 is used to convert the result to non-logarithmic
+         value.
+************************************************************************************/
+function  MG811_MGGetPercentage( volts, curva){
+    var pcurve = pcurves[curva];
+    //console.log("p0="+ pcurve[0] +" p1="+ pcurve[1] +" p2="+ pcurve[2] );
+    if ((volts / MG811_DC_GAIN ) >= MG811_ZERO_POINT_VOLTAGE) {
+      return 0;
+    } else {
+      //return pow(10, ((volts / MG811_DC_GAIN) - pcurve[1]) / pcurve[2] + pcurve[0]);
+      return Math.pow(10, ((volts / MG811_DC_GAIN) - pcurve[1]) / pcurve[2] + pcurve[0]);
+    }
+}
 
 
 io.sockets.on('connection', function(socket){
@@ -266,6 +308,7 @@ io.sockets.on('connection', function(socket){
    setInterval(function(){
 
       socket.emit('new_data', new_data);
+      socket.emit('new_CO2_data', new_CO2_data);
 
         socket.emit('serverStartTicker', { logInterval: logInterval });
       date = new Date() ;

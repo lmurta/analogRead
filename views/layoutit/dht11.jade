@@ -32,7 +32,6 @@ head
 
     script(type='text/javascript').
       var arduinoPort, arduinoVersion;
-      var pHon =false;
       var now;
       var timeTick =0;
       function toggle(button)      {
@@ -60,90 +59,63 @@ head
             socket.emit('saveFile', { saveFile: 'false' });
           }
         });
-        $('#pHmeterCheckbox').change(function () {
-          if($('#pHmeterCheckbox').is(':checked')){
-            //console.log('save file true');
-            socket.emit('saveFile', { saveFile: 'true' });
-          }else{
-            //console.log('save file false');
-            socket.emit('saveFile', { saveFile: 'false' });
-          }
-        });        
         var socket = io();
+        var totalPoints = 1000;
         var H,T,A0, A1, A2,A3, A4, A5;
         var dH=[],dT=[], d0=[], d1=[], d2=[], d3=[], d4=[], d5=[];
-        var dataToPlot=new Array(13);
-        var dataToPlotLabel =new Array(13);
-        for (var j=0;j<13;j++){
+  
+        var dataToPlot=new Array(8);
+        var dataToPlotLabel =new Array(8);
+        for (var j=0;j<8;j++){
           dataToPlot[j] = new Array();
           dataToPlotLabel[j]="";
         }
+  
+        var data_CO2        = new Array(4);
+        var data_CO2_Label  = new Array(4);
+        for (var j=0;j<4;j++){
+          data_CO2[j] = new Array();
+          data_CO2_Label[j]="";
+        }
         
-        var totalPoints = 100;
         var i =0;
         socket.on('serverStartTicker', function (interval) {
           //console.log(interval.logInterval);
           timeTick = interval.logInterval /1000;
-        });        
-        socket.on('arduinoConnected', function (ArduinoData) {
-          //console.log(ArduinoData.arduino_serialport_name);
-          arduinoPort    = ArduinoData.arduino_serialport_name;
-          arduinoVersion = ArduinoData.arduino_boardVersion;
-          $("#footer").prepend("Flot " + $.plot.version + " &ndash; Arduino "+arduinoVersion +" on "+ arduinoPort);
-        });
-        socket.on('plotlyConnected', function (plotlyData) {
-          $("#plotly").prepend("Plotly: <a href=" + plotlyData.plotlyLink +">"+ plotlyData.plotlyLink+"</a>");
+        });   
+        socket.on('new_CO2_data', function (data) {
+          now = ((new Date()).getTime());
+          var index = 0;
+          for(var data_key in data){
+            if(data_CO2[index].length>totalPoints){
+              data_CO2[index] = data_CO2[index].slice(0-totalPoints);
+            }
+            data_CO2[index].push([now,data[data_key]]);
+            data_CO2_Label[index] = data_key;
+            index++;
+          }
+          update();
+          //console.log(d0);
         });
         socket.on('new_data', function (data) {
           now = ((new Date()).getTime());
           var index = 0;
           for(var data_key in data){
-            //console.log(data_key +"="+ data[data_key]);
+            console.log(data_key +"="+ data[data_key]);
+            if(dataToPlot[index].length>totalPoints){
+              dataToPlot[index] = dataToPlot[index].slice(0-totalPoints);
+            }
             dataToPlot[index].push([now,data[data_key]]);
-            dataToPlotLabel[index++] = data_key;
+            dataToPlotLabel[index] = data_key;
+            index++;
           }
-          //console.log(dataToPlot[2]);
-          H = data.H;
-          T = data.T;
-          A0 = dataToPlot[2][i][1];
-          if(typeof dataToPlot[3][i] !== 'undefined'){A1 = dataToPlot[3][i][1];}else {A1=0;}
-          if(typeof dataToPlot[4][i] !== 'undefined'){A2 = dataToPlot[4][i][1];}else {A2=0;}
-          if(typeof dataToPlot[5][i] !== 'undefined'){A3 = dataToPlot[5][i][1];}else {A3=0;}
-          if(typeof dataToPlot[6][i] !== 'undefined'){A4 = dataToPlot[6][i][1];}else {A4=0;}
-          if(typeof dataToPlot[7][i] !== 'undefined'){A5 = dataToPlot[7][i][1];}else {A5=0;}
-          
-          if(d0.length>totalPoints){
-            d0 = d0.slice(0-totalPoints);
-            d1 = d1.slice(0-totalPoints);
-            d2 = d2.slice(0-totalPoints);
-            d3 = d3.slice(0-totalPoints);
-            d4 = d4.slice(0-totalPoints);
-            d5 = d5.slice(0-totalPoints);
-            dT = dT.slice(0-totalPoints);
-            dH = dH.slice(0-totalPoints);
-          }
-          d0.push([now,A0]);  
-          d1.push([now,A1]); 
-          d2.push([now,A2]); 
-          d3.push([now,A3]); 
-          d4.push([now,A4]); 
-          d5.push([now,A5]); 
-          dH.push([now,H]); 
-          dT.push([now,T]); 
-          i++;
-          $('#div_H').text(H +":%");
-          $('#div_T').text(T +"°C");
-          $('#div_an0').text(A0 +":"+dataToPlotLabel[2]);
-          $('#div_an1').text(A1 +":"+dataToPlotLabel[3]);
-          $('#div_an2').text(A2 +":"+dataToPlotLabel[4]);
-          $('#div_an3').text(A3 +":"+dataToPlotLabel[5]);
-          $('#div_an4').text(A4 +":"+dataToPlotLabel[6]);
-          $('#div_an5').text(A5 +":"+dataToPlotLabel[7]);
+          $('#div_H').text(data.H +":%");
+          $('#div_T').text(data.T +"°C");
+          $('#div_an0').text(data.MG811 +":"+dataToPlotLabel[2]);
           update();
           //console.log(d0);
           socket.emit('my other event', { my: 'client do server' });
         });
-        //var  totalPoints = 300;
         function update() {
           var d;
             d=[
@@ -153,10 +125,10 @@ head
               { data: dataToPlot[5], label:dataToPlotLabel[5]},
               { data: dataToPlot[6], label:dataToPlotLabel[6]},
               { data: dataToPlot[7], label:dataToPlotLabel[7]},
-              { data: dH, label:'H', yaxis:2, lineWidth: 4,lines: { show: true },points: { show: true }},
-              { data: dT, label:'T', yaxis:2, lineWidth: 2,lines: { show: true },points: { show: true }}
+              { data: dataToPlot[0], label:dataToPlotLabel[0], yaxis:2, lineWidth: 4,lines: { show: true },points: { show: true }},
+              { data: dataToPlot[1], label:dataToPlotLabel[1], yaxis:2, lineWidth: 2,lines: { show: true },points: { show: true }}
             ];
-          plot = $.plot("#placeholder", d , {
+          plot = $.plot("#flot1", d , {
             series: {
               lines: {
                 lineWidth: 1,
@@ -184,6 +156,30 @@ head
             }
           });
           plot.draw();
+          d_CO2=[
+              { data: data_CO2[0], label:data_CO2_Label[0],  lineWidth: 4,lines: { show: true },points: { show: true }},
+            ];
+          plot2 = $.plot("#flot2", d_CO2 , {
+            series: {
+              lines: {
+                lineWidth: 1,
+                shadowSize: 0,
+              },
+              shadowSize: 0, // Drawing is faster without shadows
+            },
+            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
+            xaxes: [{  
+                      mode: "time",
+                      timeformat: "%H:%M:%S",
+                      timezone: "browser",
+                      show: true,
+                      //rotateTicks: 135,
+            }],
+            yaxes: [  { position: "left" , min: 0, max: 10000 }, 
+                  ],
+          });
+          plot2.draw();
+
         }
       });
 
@@ -251,9 +247,10 @@ head
           h3
             | Sensores do Arduino
           p
-          #placeholder.demo-placeholder(style="width:800px;height:400px")
+          #flot1.demo-flot(style="width:800px;height:400px")
           #footer
           #plotly
+          #flot2.demo-flot(style="width:800px;height:400px")
           h2
             | Instruções
           ul

@@ -11,9 +11,9 @@ Note:    This piece of source code is supposed to be used as a demostration ONLY
 ************************************************************************************/
 
 /************************Hardware Related Macros************************************/
-#define         MQ811_MG_PIN                       (0)     //define which analog input channel you are going to use
-#define         MQ811_BOOL_PIN                     (2)
-#define         MQ811_DC_GAIN                      (8.5)   //define the DC gain of amplifier
+#define         MG811_MG_PIN                       (0)     //define which analog input channel you are going to use
+#define         MG811_BOOL_PIN                     (2)
+#define         MG811_DC_GAIN                      (8.5)   //define the DC gain of amplifier
 
 /***********************Software Related Macros************************************/
 #define         READ_SAMPLE_INTERVAL         (50)    //define how many samples you are going to take in normal operation
@@ -22,11 +22,11 @@ Note:    This piece of source code is supposed to be used as a demostration ONLY
 
 /**********************Application Related Macros**********************************/
 //These two values differ from sensor to sensor. user should derermine this value.
-#define         MQ811_ZERO_POINT_VOLTAGE           (0.220) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
-#define         MQ811_REACTION_VOLTAGE             (0.020) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+#define         MG811_ZERO_POINT_VOLTAGE           (0.220) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
+#define         MG811_REACTION_VOLTAGE             (0.020) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
 
 /*****************************Globals***********************************************/
-float           MQ811_CO2Curve[3]  =  {2.602, MQ811_ZERO_POINT_VOLTAGE, (MQ811_REACTION_VOLTAGE / (2.602 - 3))};
+float           MG811_CO2Curve[3]  =  {2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))};
 //two points are taken from the curve.
 //with these two points, a line is formed which is
 //"approximately equivalent" to the original curve.
@@ -36,8 +36,8 @@ float           MQ811_CO2Curve[3]  =  {2.602, MQ811_ZERO_POINT_VOLTAGE, (MQ811_R
 void setup()
 {
   Serial.begin(57600);                              //UART setup, baudrate = 9600bps
-  pinMode(MQ811_BOOL_PIN, INPUT);                        //set pin to input
-  digitalWrite(MQ811_BOOL_PIN, HIGH);                    //turn on pullup resistors
+  pinMode(MG811_BOOL_PIN, INPUT);                        //set pin to input
+  digitalWrite(MG811_BOOL_PIN, HIGH);                    //turn on pullup resistors
 
   Serial.print("MG-811 Demostration\n");
 }
@@ -47,13 +47,13 @@ void loop()
   int percentage;
   float volts;
 
-  volts = MQ811_MGRead(MQ811_MG_PIN);
+  volts = MG811_MGRead(MG811_MG_PIN);
   Serial.print( "SEN-00007:" );
   Serial.print(volts);
-  Serial.print( "V           " );
+  Serial.print( "V " );
 
-  percentage = MQ811_MGGetPercentage(volts, MQ811_CO2Curve);
-  Serial.print("MQ811_CO2:");
+  percentage = MG811_MGGetPercentage(volts, MG811_CO2Curve);
+  Serial.print("MG811_CO2:");
   if (percentage == -1) {
     Serial.print( "<400" );
   } else {
@@ -62,15 +62,15 @@ void loop()
 
   Serial.print( "ppm" );
   Serial.print("\n");
-
-  if (digitalRead(MQ811_BOOL_PIN) ) {
+/*
+  if (digitalRead(MG811_BOOL_PIN) ) {
     Serial.print( "=====BOOL is HIGH======" );
   } else {
     Serial.print( "=====BOOL is LOW======" );
   }
 
   Serial.print("\n");
-
+*/
   delay(200);
 }
 
@@ -79,7 +79,7 @@ Input:   mg_pin - analog channel
 Output:  output of SEN-000007
 Remarks: This function reads the output of SEN-000007
 ************************************************************************************/
-float MQ811_MGRead(int mg_pin)
+float MG811_MGRead(int mg_pin)
 {
   int i;
   float v = 0;
@@ -101,11 +101,11 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
          logarithmic coordinate, power of 10 is used to convert the result to non-logarithmic
          value.
 ************************************************************************************/
-int  MQ811_MGGetPercentage(float volts, float *pcurve)
+int  MG811_MGGetPercentage(float volts, float *pcurve)
 {
-  if ((volts / MQ811_DC_GAIN ) >= MQ811_ZERO_POINT_VOLTAGE) {
+  if ((volts / MG811_DC_GAIN ) >= MG811_ZERO_POINT_VOLTAGE) {
     return -1;
   } else {
-    return pow(10, ((volts / MQ811_DC_GAIN) - pcurve[1]) / pcurve[2] + pcurve[0]);
+    return pow(10, ((volts / MG811_DC_GAIN) - pcurve[1]) / pcurve[2] + pcurve[0]);
   }
 }
