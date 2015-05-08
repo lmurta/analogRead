@@ -38,6 +38,7 @@ var H,T, A0,A1,A2,A3,A4,A5 ;
 var config_pins = require('./config_pins');
 var new_data = {};
 var new_CO2_data = {};
+var new_MQ2_data = {};
 
 
 //two points are taken from the curve. 
@@ -87,7 +88,7 @@ var MQ2_RO_CLEAN_AIR_FACTOR     = 9.83;  //RO_CLEAR_AIR_FACTOR=(Sensor resistanc
                                                      //which is derived from the chart in datasheet
  
 //Ro is initialized to 10 kilo ohms
-var           MQ2_Ro           =  3.56; //valor medido experimentalmente
+var           MQ2_Ro           =  9.7; //valor medido experimentalmente
 var           MQ4_Ro           =  13.6; //valor medido experimentalmente
 var           MQ6_Ro           =  5.68; //valor medido experimentalmente
 
@@ -177,7 +178,7 @@ sp.on("data", function (data) {
 function process_MQ2(analogRead){
   console.log("Processing MQ2 = "+analogRead);
   var rs = MQ_MQRead(MQ2_RL_VALUE,analogRead);
-  //console.log("RS="+rs);
+  console.log("RS="+rs);
   var MQ2_LPG     = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_LPG);
   var MQ2_CO      = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_CO);
   var MQ2_SMOKE   = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_SMOKE);
@@ -185,6 +186,13 @@ function process_MQ2(analogRead){
   var MQ2_CH4     = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_CH4);
   var MQ2_ETH     = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_ETH);
   var MQ2_PROPANE = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_PROPANE);
+  new_MQ2_data["MQ2_LPG"] = MQ2_LPG.toFixed(2);
+  new_MQ2_data["MQ2_CO"] = MQ2_CO.toFixed(2);
+  new_MQ2_data["MQ2_SMOKE"] = MQ2_SMOKE.toFixed(2);
+  new_MQ2_data["MQ2_H2"] = MQ2_H2.toFixed(2);
+  new_MQ2_data["MQ2_CH4"] = MQ2_CH4.toFixed(2);
+  new_MQ2_data["MQ2_ETH"] = MQ2_ETH.toFixed(2);
+  new_MQ2_data["MQ2_PROPANE"] = MQ2_PROPANE.toFixed(2);
 
   console.log("LPG="      + MQ2_LPG.toFixed(2) + " "
               +"CO="      + MQ2_CO.toFixed(2) + " "
@@ -259,7 +267,7 @@ function MQ_MQRead(RL_VALUE,raw_adc){
   return rs;  
 }
 /****************** MQResistanceCalculation ****************************************
-Input:   raw_adc - raw value read from adc, which represents the voltage
+Input:   raw_adc - raw value read from adc, which represent3.s the voltage
 Output:  the calculated sensor resistance
 Remarks: The sensor and the load resistor forms a voltage divider. Given the voltage
          across the load resistor and its resistance, the resistance of the sensor
@@ -280,7 +288,16 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
 function  MQ_MQGetPercentage( rs_ro_ratio, curva){
 
   var pcurve = pcurves[curva];
-  var percent =(Math.pow(10,( ((Math.log(rs_ro_ratio)-pcurve[1])/pcurve[2]) + pcurve[0])));
+  var percent =Math.pow(10,
+                           (
+                              (
+                                  (Math.log(rs_ro_ratio)/Math.LN10)-pcurve[1]
+                              )/pcurve[2]
+                           ) + pcurve[0]
+                        );
+  //console.log("rs_ro_ratio:"+rs_ro_ratio+"log:"+(Math.log(rs_ro_ratio)/Math.LN10) );
+  //console.log("rs_ro_ratio:"+rs_ro_ratio+" pcurve[0]:"+pcurve[0]+" pcurve[1]:"+pcurve[1]+" pcurve[2]:"+pcurve[2])
+  //console.log("percent:"+percent);
   return percent;
 }
 /*****************************  MQGetPercentage **********************************
@@ -312,6 +329,7 @@ io.sockets.on('connection', function(socket){
 
       socket.emit('new_data', new_data);
       socket.emit('new_CO2_data', new_CO2_data);
+      socket.emit('new_MQ2_data', new_MQ2_data);
 
         socket.emit('serverStartTicker', { logInterval: logInterval });
       date = new Date() ;

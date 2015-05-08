@@ -47,7 +47,7 @@ void setup()
 {
   Serial.begin(57600);                               //UART setup, baudrate = 9600bps
   Serial.print("Calibrating...\n");                
-  MQ2_Ro = MQ2_MQCalibration(MQ2_MQ_PIN);                       //Calibrating the sensor. Please make sure the sensor is in clean air 
+  //MQ2_Ro = MQ2_MQCalibration(MQ2_MQ_PIN);                       //Calibrating the sensor. Please make sure the sensor is in clean air 
                                                     //when you perform the calibration                    
   Serial.print("Calibration is done...\n"); 
   Serial.print("Ro=");
@@ -58,7 +58,9 @@ void setup()
 
 void loop()
 {
-   Serial.print("LPG:"); 
+  //Serial.print("raw=" );
+  // Serial.print( MQ2_MQRead(MQ2_MQ_PIN));
+   Serial.print(" LPG:"); 
    Serial.print(MQ2_MQGetGasPercentage(MQ2_MQRead(MQ2_MQ_PIN)/MQ2_Ro,MQ2_GAS_LPG) );
    Serial.print( "ppm" );
    Serial.print("    ");   
@@ -121,14 +123,24 @@ float MQ2_MQRead(int mq_pin)
 {
   int i;
   float rs=0;
-
+  float raw=0;
+  int an=0;
   for (i=0;i<READ_SAMPLE_TIMES;i++) {
-    rs += MQ2_MQResistanceCalculation(analogRead(mq_pin));
+    an = analogRead(mq_pin);
+    raw +=an;
+    rs += MQ2_MQResistanceCalculation(an);
     delay(READ_SAMPLE_INTERVAL);
   }
-
+  raw = raw/READ_SAMPLE_TIMES;
   rs = rs/READ_SAMPLE_TIMES;
+  Serial.print("[Raw:");
+  Serial.print(raw);
+  Serial.print(" Rs:");
+  Serial.print(rs);
+  Serial.print("]");
+  //Serial.print("\n");
 
+  
   return rs;  
 }
 
@@ -163,5 +175,11 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
 ************************************************************************************/ 
 int  MQ2_MQGetPercentage(float rs_ro_ratio, float *pcurve)
 {
-  return (pow(10,( ((log(rs_ro_ratio)-pcurve[1])/pcurve[2]) + pcurve[0])));
+  return pow(10, 
+                (
+                  (
+                    log(rs_ro_ratio)-pcurve[1]
+                  )/pcurve[2]
+                ) + pcurve[0]
+            );
 }

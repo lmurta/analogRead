@@ -1,3 +1,65 @@
+===MQ2 test
+Calibrating...
+Calibration is done...
+Ro=8.65kohm
+raw=80.41 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=87.21 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=79.58 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=74.74 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=84.20 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=82.04 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=82.86 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=75.45 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=97.83 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=84.31 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=95.20 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=122.51 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=101.31 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=105.84 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=104.36 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=104.35 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=107.54 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=109.18 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=37.41 LPG:1ppm    CO:45ppm    SMOKE:60ppm
+raw=14.73 LPG:62ppm    CO:1747ppm    SMOKE:676ppm
+raw=11.40 LPG:150ppm    CO:5465ppm    SMOKE:996ppm
+raw=10.76 LPG:188ppm    CO:5831ppm    SMOKE:910ppm
+raw=11.04 LPG:178ppm    CO:5614ppm    SMOKE:932ppm
+raw=10.69 LPG:188ppm    CO:7016ppm    SMOKE:963ppm
+raw=11.09 LPG:161ppm    CO:3919ppm    SMOKE:774ppm
+raw=11.77 LPG:123ppm    CO:3144ppm    SMOKE:595ppm
+raw=12.20 LPG:96ppm    CO:2113ppm    SMOKE:469ppm
+raw=12.91 LPG:77ppm    CO:1585ppm    SMOKE:310ppm
+raw=13.51 LPG:58ppm    CO:1183ppm    SMOKE:203ppm
+raw=15.35 LPG:32ppm    CO:456ppm    SMOKE:111ppm
+raw=16.81 LPG:19ppm    CO:212ppm    SMOKE:74ppm
+raw=18.11 LPG:14ppm    CO:140ppm    SMOKE:55ppm
+raw=19.14 LPG:11ppm    CO:93ppm    SMOKE:39ppm
+raw=20.39 LPG:7ppm    CO:58ppm    SMOKE:28ppm
+raw=21.68 LPG:5ppm    CO:41ppm    SMOKE:22ppm
+raw=22.53 LPG:4ppm    CO:38ppm    SMOKE:16ppm
+raw=24.21 LPG:3ppm    CO:25ppm    SMOKE:11ppm
+raw=24.78 LPG:2ppm    CO:12ppm    SMOKE:9ppm
+raw=27.07 LPG:2ppm    CO:12ppm    SMOKE:7ppm
+raw=28.01 LPG:1ppm    CO:6ppm    SMOKE:4ppm
+raw=29.99 LPG:1ppm    CO:5ppm    SMOKE:3ppm
+raw=32.56 LPG:1ppm    CO:2ppm    SMOKE:3ppm
+raw=33.02 LPG:0ppm    CO:2ppm    SMOKE:2ppm
+raw=33.59 LPG:0ppm    CO:1ppm    SMOKE:2ppm
+raw=36.18 LPG:0ppm    CO:1ppm    SMOKE:2ppm
+raw=35.42 LPG:0ppm    CO:1ppm    SMOKE:1ppm
+raw=35.82 LPG:0ppm    CO:1ppm    SMOKE:1ppm
+raw=36.62 LPG:0ppm    CO:0ppm    SMOKE:1ppm
+raw=39.70 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=43.60 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=46.86 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=50.63 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=51.55 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=54.97 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=54.22 LPG:0ppm    CO:0ppm    SMOKE:0ppm
+raw=
+
+
 ======================Teste com o programa de exemplo do arduino
 Calibrating...
 Calibration is done...
