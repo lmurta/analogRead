@@ -82,7 +82,13 @@ head
         for (var j=0;j<7;j++){
           data_MQ2[j] = new Array();
           data_MQ2_Label[j]="";
-        }       
+        }    
+        var data_MQ4        = new Array(7);
+        var data_MQ4_Label  = new Array(7);
+        for (var j=0;j<7;j++){
+          data_MQ4[j] = new Array();
+          data_MQ4_Label[j]="";
+        }     
         var i =0;
         socket.on('serverStartTicker', function (interval) {
           //console.log(interval.logInterval);
@@ -116,6 +122,20 @@ head
           update();
           //console.log(d0);
         });
+        socket.on('new_MQ4_data', function (data) {
+          now = ((new Date()).getTime());
+          var index = 0;
+          for(var data_key in data){
+            if(data_MQ4[index].length>totalPoints){
+              data_MQ4[index] = data_MQ4[index].slice(0-totalPoints);
+            }
+            data_MQ4[index].push([now,data[data_key]]);
+            data_MQ4_Label[index] = data_key;
+            index++;
+          }
+          update();
+          //console.log(d0);
+        });
         socket.on('new_data', function (data) {
           now = ((new Date()).getTime());
           var index = 0;
@@ -132,6 +152,7 @@ head
           $('#div_T').text(data.T +"°C");
           $('#div_an0').text(data.MG811 +":"+dataToPlotLabel[2]);
           $('#div_an1').text(data.MQ2 +":"+dataToPlotLabel[3]);
+          $('#div_an4').text(data.MQ4 +":"+dataToPlotLabel[4]);
           update();
           //console.log(d0);
           socket.emit('my other event', { my: 'client do server' });
@@ -200,7 +221,7 @@ head
           });
           plot2.draw();
           d_MQ2=[
-              { data: data_MQ2[0], label:data_MQ2_Label[0],  lineWidth: 4,lines: { show: true },points: { show: false }},
+              { data: data_MQ2[0], label:data_MQ2_Label[0],  lineWidth: 4,lines: { show: true },points: { show: true }},
               { data: data_MQ2[1], label:data_MQ2_Label[1],  lineWidth: 4,lines: { show: true },points: { show: false }},
               { data: data_MQ2[2], label:data_MQ2_Label[2],  lineWidth: 4,lines: { show: true },points: { show: false }},                
               { data: data_MQ2[3], label:data_MQ2_Label[3],  lineWidth: 4,lines: { show: true },points: { show: false }},                
@@ -228,6 +249,36 @@ head
                   ],
           });
           plot3.draw();
+          d_MQ4=[
+              { data: data_MQ4[0], label:data_MQ4_Label[0],  lineWidth: 4,lines: { show: true },points: { show: false }},
+              { data: data_MQ4[1], label:data_MQ4_Label[1],  lineWidth: 4,lines: { show: true },points: { show: false }},
+              { data: data_MQ4[2], label:data_MQ4_Label[2],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ4[3], label:data_MQ4_Label[3],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ4[4], label:data_MQ4_Label[4],  lineWidth: 4,lines: { show: true },points: { show: true }},                
+              { data: data_MQ4[5], label:data_MQ4_Label[5],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ4[6], label:data_MQ4_Label[6],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+            ];
+          plot4 = $.plot("#flot4", d_MQ4 , {
+            series: {
+              lines: {
+                lineWidth: 1,
+                shadowSize: 0,
+              },
+              shadowSize: 0, // Drawing is faster without shadows
+            },
+            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
+            xaxes: [{  
+                      mode: "time",
+                      timeformat: "%H:%M:%S",
+                      timezone: "browser",
+                      show: true,
+                      //rotateTicks: 135,
+            }],
+            yaxes: [  { position: "left" , min: 0, max: 10000 }, 
+                  ],
+          });
+          plot4.draw();
+
 
 
         }
@@ -302,6 +353,7 @@ head
           #plotly
           #flot2.demo-flot(style="width:800px;height:400px")
           #flot3.demo-flot(style="width:800px;height:400px")
+          #flot4.demo-flot(style="width:800px;height:400px")
           h2
             | Instruções
           ul

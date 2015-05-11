@@ -1,63 +1,77 @@
 ===MQ2 test
-Calibrating...
-Calibration is done...
-Ro=8.65kohm
-raw=80.41 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=87.21 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=79.58 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=74.74 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=84.20 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=82.04 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=82.86 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=75.45 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=97.83 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=84.31 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=95.20 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=122.51 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=101.31 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=105.84 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=104.36 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=104.35 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=107.54 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=109.18 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=37.41 LPG:1ppm    CO:45ppm    SMOKE:60ppm
-raw=14.73 LPG:62ppm    CO:1747ppm    SMOKE:676ppm
-raw=11.40 LPG:150ppm    CO:5465ppm    SMOKE:996ppm
-raw=10.76 LPG:188ppm    CO:5831ppm    SMOKE:910ppm
-raw=11.04 LPG:178ppm    CO:5614ppm    SMOKE:932ppm
-raw=10.69 LPG:188ppm    CO:7016ppm    SMOKE:963ppm
-raw=11.09 LPG:161ppm    CO:3919ppm    SMOKE:774ppm
-raw=11.77 LPG:123ppm    CO:3144ppm    SMOKE:595ppm
-raw=12.20 LPG:96ppm    CO:2113ppm    SMOKE:469ppm
-raw=12.91 LPG:77ppm    CO:1585ppm    SMOKE:310ppm
-raw=13.51 LPG:58ppm    CO:1183ppm    SMOKE:203ppm
-raw=15.35 LPG:32ppm    CO:456ppm    SMOKE:111ppm
-raw=16.81 LPG:19ppm    CO:212ppm    SMOKE:74ppm
-raw=18.11 LPG:14ppm    CO:140ppm    SMOKE:55ppm
-raw=19.14 LPG:11ppm    CO:93ppm    SMOKE:39ppm
-raw=20.39 LPG:7ppm    CO:58ppm    SMOKE:28ppm
-raw=21.68 LPG:5ppm    CO:41ppm    SMOKE:22ppm
-raw=22.53 LPG:4ppm    CO:38ppm    SMOKE:16ppm
-raw=24.21 LPG:3ppm    CO:25ppm    SMOKE:11ppm
-raw=24.78 LPG:2ppm    CO:12ppm    SMOKE:9ppm
-raw=27.07 LPG:2ppm    CO:12ppm    SMOKE:7ppm
-raw=28.01 LPG:1ppm    CO:6ppm    SMOKE:4ppm
-raw=29.99 LPG:1ppm    CO:5ppm    SMOKE:3ppm
-raw=32.56 LPG:1ppm    CO:2ppm    SMOKE:3ppm
-raw=33.02 LPG:0ppm    CO:2ppm    SMOKE:2ppm
-raw=33.59 LPG:0ppm    CO:1ppm    SMOKE:2ppm
-raw=36.18 LPG:0ppm    CO:1ppm    SMOKE:2ppm
-raw=35.42 LPG:0ppm    CO:1ppm    SMOKE:1ppm
-raw=35.82 LPG:0ppm    CO:1ppm    SMOKE:1ppm
-raw=36.62 LPG:0ppm    CO:0ppm    SMOKE:1ppm
-raw=39.70 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=43.60 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=46.86 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=50.63 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=51.55 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=54.97 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=54.22 LPG:0ppm    CO:0ppm    SMOKE:0ppm
-raw=
+Ro=10.00kohm
+ LPG:[Raw:28.00 Rs:187.28]0ppm    CO:[Raw:24.80 Rs:207.87]0ppm    SMOKE:[Raw:18.80 Rs:inf]0ppm
+ LPG:[Raw:22.20 Rs:inf]0ppm    CO:[Raw:27.40 Rs:182.88]0ppm    SMOKE:[Raw:26.80 Rs:186.42]0ppm
+ LPG:[Raw:34.00 Rs:165.42]0ppm    CO:[Raw:24.80 Rs:202.63]0ppm    SMOKE:[Raw:25.00 Rs:206.27]0ppm
+ LPG:[Raw:24.00 Rs:211.45]0ppm    CO:[Raw:25.20 Rs:212.00]0ppm    SMOKE:[Raw:21.60 Rs:261.43]0ppm
+ LPG:[Raw:26.40 Rs:190.35]0ppm    CO:[Raw:23.00 Rs:222.93]0ppm    SMOKE:[Raw:40.20 Rs:192.90]0ppm
+ LPG:[Raw:21.20 Rs:243.10]0ppm    CO:[Raw:26.80 Rs:188.97]0ppm    SMOKE:[Raw:43.80 Rs:169.00]0ppm
+ LPG:[Raw:21.60 Rs:inf]0ppm    CO:[Raw:28.40 Rs:177.14]0ppm    SMOKE:[Raw:22.80 Rs:279.01]0ppm
+ LPG:[Raw:25.20 Rs:202.70]0ppm    CO:[Raw:20.20 Rs:307.07]0ppm    SMOKE:[Raw:26.20 Rs:203.07]0ppm
+ LPG:[Raw:28.00 Rs:180.57]0ppm    CO:[Raw:17.00 Rs:inf]0ppm    SMOKE:[Raw:27.40 Rs:186.19]0ppm
+ LPG:[Raw:25.60 Rs:202.20]0ppm    CO:[Raw:23.80 Rs:215.38]0ppm    SMOKE:[Raw:29.00 Rs:175.55]0ppm
+ LPG:[Raw:25.00 Rs:202.63]0ppm    CO:[Raw:26.00 Rs:200.58]0ppm    SMOKE:[Raw:21.40 Rs:412.20]0ppm
+ LPG:[Raw:26.00 Rs:192.91]0ppm    CO:[Raw:28.60 Rs:187.86]0ppm    SMOKE:[Raw:26.20 Rs:195.56]0ppm
+ LPG:[Raw:27.40 Rs:183.56]0ppm    CO:[Raw:24.40 Rs:206.35]0ppm    SMOKE:[Raw:26.00 Rs:193.13]0ppm
+ LPG:[Raw:25.40 Rs:199.66]0ppm    CO:[Raw:18.20 Rs:inf]0ppm    SMOKE:[Raw:20.20 Rs:inf]0ppm
+ LPG:[Raw:27.00 Rs:187.07]0ppm    CO:[Raw:27.60 Rs:195.79]0ppm    SMOKE:[Raw:28.20 Rs:187.00]0ppm
+ LPG:[Raw:26.80 Rs:194.81]0ppm    CO:[Raw:25.80 Rs:197.84]0ppm    SMOKE:[Raw:28.80 Rs:175.61]0ppm
+ LPG:[Raw:27.40 Rs:190.70]0ppm    CO:[Raw:27.60 Rs:184.20]0ppm    SMOKE:[Raw:17.80 Rs:inf]0ppm
+ LPG:[Raw:36.00 Rs:166.56]0ppm    CO:[Raw:26.00 Rs:259.09]0ppm    SMOKE:[Raw:27.80 Rs:181.24]0ppm
+ LPG:[Raw:29.00 Rs:180.05]0ppm    CO:[Raw:30.20 Rs:165.31]0ppm    SMOKE:[Raw:27.20 Rs:184.06]0ppm
+ LPG:[Raw:28.80 Rs:176.82]0ppm    CO:[Raw:28.40 Rs:187.17]0ppm    SMOKE:[Raw:26.40 Rs:193.17]0ppm
+ LPG:[Raw:25.40 Rs:inf]0ppm    CO:[Raw:26.00 Rs:197.64]0ppm    SMOKE:[Raw:27.40 Rs:182.69]0ppm
+ LPG:[Raw:26.00 Rs:204.92]0ppm    CO:[Raw:27.60 Rs:183.17]0ppm    SMOKE:[Raw:26.80 Rs:189.77]0ppm
+ LPG:[Raw:26.00 Rs:194.59]0ppm    CO:[Raw:23.80 Rs:219.41]0ppm    SMOKE:[Raw:26.20 Rs:192.94]0ppm
+ LPG:[Raw:27.00 Rs:185.85]0ppm    CO:[Raw:30.00 Rs:167.42]0ppm    SMOKE:[Raw:28.80 Rs:173.66]0ppm
+ LPG:[Raw:28.60 Rs:180.41]0ppm    CO:[Raw:25.60 Rs:198.65]0ppm    SMOKE:[Raw:28.40 Rs:179.17]0ppm
+ LPG:[Raw:24.80 Rs:214.33]0ppm    CO:[Raw:28.80 Rs:174.67]0ppm    SMOKE:[Raw:26.60 Rs:188.75]0ppm
+ LPG:[Raw:22.00 Rs:251.40]0ppm    CO:[Raw:29.20 Rs:171.02]0ppm    SMOKE:[Raw:30.00 Rs:170.85]0ppm
+ LPG:[Raw:41.20 Rs:124.74]0ppm    CO:[Raw:49.20 Rs:99.13]0ppm    SMOKE:[Raw:53.40 Rs:91.97]0ppm
+ LPG:[Raw:100.60 Rs:46.64]0ppm    CO:[Raw:123.00 Rs:36.87]3ppm    SMOKE:[Raw:143.80 Rs:30.75]8ppm
+ LPG:[Raw:185.20 Rs:22.65]10ppm    CO:[Raw:199.00 Rs:20.73]187ppm    SMOKE:[Raw:213.60 Rs:18.96]112ppm
+ LPG:[Raw:237.80 Rs:16.52]47ppm    CO:[Raw:247.00 Rs:15.72]1220ppm    SMOKE:[Raw:257.00 Rs:14.91]395ppm
+ LPG:[Raw:272.40 Rs:13.79]115ppm    CO:[Raw:274.80 Rs:13.62]3224ppm    SMOKE:[Raw:285.20 Rs:12.94]830ppm
+ LPG:[Raw:292.40 Rs:12.50]187ppm    CO:[Raw:292.00 Rs:12.52]5704ppm    SMOKE:[Raw:298.40 Rs:12.15]1154ppm
+ LPG:[Raw:303.60 Rs:11.85]243ppm    CO:[Raw:309.60 Rs:11.53]10002ppm    SMOKE:[Raw:306.60 Rs:11.69]1414ppm
+ LPG:[Raw:314.00 Rs:11.30]307ppm    CO:[Raw:316.00 Rs:11.19]12233ppm    SMOKE:[Raw:314.60 Rs:11.26]1713ppm
+ LPG:[Raw:317.20 Rs:11.13]330ppm    CO:[Raw:322.80 Rs:10.85]15030ppm    SMOKE:[Raw:321.60 Rs:10.91]2027ppm
+ LPG:[Raw:322.00 Rs:10.89]368ppm    CO:[Raw:321.00 Rs:10.93]14281ppm    SMOKE:[Raw:330.00 Rs:10.50]2471ppm
+ LPG:[Raw:326.00 Rs:10.69]402ppm    CO:[Raw:322.20 Rs:10.88]14784ppm    SMOKE:[Raw:328.20 Rs:10.59]2371ppm
+ LPG:[Raw:326.60 Rs:10.66]407ppm    CO:[Raw:327.00 Rs:10.64]17151ppm    SMOKE:[Raw:327.00 Rs:10.64]2305ppm
+ LPG:[Raw:333.20 Rs:10.35]470ppm    CO:[Raw:333.80 Rs:10.33]21039ppm    SMOKE:[Raw:330.60 Rs:10.47]2509ppm
+ LPG:[Raw:332.00 Rs:10.41]458ppm    CO:[Raw:330.60 Rs:10.47]19107ppm    SMOKE:[Raw:331.40 Rs:10.44]2557ppm
+ LPG:[Raw:335.20 Rs:10.27]490ppm    CO:[Raw:330.80 Rs:10.46]19250ppm    SMOKE:[Raw:328.20 Rs:10.60]2351ppm
+ LPG:[Raw:322.00 Rs:10.89]368ppm    CO:[Raw:319.20 Rs:11.03]13499ppm    SMOKE:[Raw:317.00 Rs:11.14]1819ppm
+ LPG:[Raw:308.60 Rs:11.58]272ppm    CO:[Raw:305.00 Rs:11.77]8667ppm    SMOKE:[Raw:308.40 Rs:11.62]1453ppm
+ LPG:[Raw:304.80 Rs:11.79]249ppm    CO:[Raw:301.60 Rs:11.96]7778ppm    SMOKE:[Raw:305.80 Rs:11.76]1366ppm
+ LPG:[Raw:299.40 Rs:12.09]220ppm    CO:[Raw:298.80 Rs:12.12]7113ppm    SMOKE:[Raw:295.00 Rs:12.34]1062ppm
+ LPG:[Raw:293.20 Rs:12.45]190ppm    CO:[Raw:290.40 Rs:12.61]5426ppm    SMOKE:[Raw:291.40 Rs:12.56]971ppm
+ LPG:[Raw:287.60 Rs:12.79]167ppm    CO:[Raw:283.60 Rs:13.04]4339ppm    SMOKE:[Raw:280.40 Rs:13.25]733ppm
+ LPG:[Raw:282.00 Rs:13.14]146ppm    CO:[Raw:278.20 Rs:13.39]3620ppm    SMOKE:[Raw:276.40 Rs:13.51]662ppm
+ LPG:[Raw:272.20 Rs:13.80]115ppm    CO:[Raw:271.80 Rs:13.82]2922ppm    SMOKE:[Raw:268.00 Rs:14.09]530ppm
+ LPG:[Raw:266.20 Rs:14.22]99ppm    CO:[Raw:261.40 Rs:14.58]2038ppm    SMOKE:[Raw:256.80 Rs:14.92]393ppm
+ LPG:[Raw:254.20 Rs:15.12]73ppm    CO:[Raw:250.20 Rs:15.45]1375ppm    SMOKE:[Raw:247.80 Rs:15.65]307ppm
+ LPG:[Raw:240.80 Rs:16.25]51ppm    CO:[Raw:239.60 Rs:16.37]929ppm    SMOKE:[Raw:228.40 Rs:17.40]176ppm
+ LPG:[Raw:224.80 Rs:17.76]33ppm    CO:[Raw:225.20 Rs:17.72]542ppm    SMOKE:[Raw:219.80 Rs:18.28]135ppm
+ LPG:[Raw:220.00 Rs:18.25]29ppm    CO:[Raw:219.00 Rs:18.36]427ppm    SMOKE:[Raw:218.80 Rs:18.38]132ppm
+ LPG:[Raw:214.60 Rs:18.84]25ppm    CO:[Raw:212.60 Rs:19.08]329ppm    SMOKE:[Raw:212.80 Rs:19.04]109ppm
+ LPG:[Raw:209.20 Rs:19.45]21ppm    CO:[Raw:206.20 Rs:19.81]255ppm    SMOKE:[Raw:203.40 Rs:20.15]81ppm
+ LPG:[Raw:197.80 Rs:20.89]15ppm    CO:[Raw:189.20 Rs:22.04]123ppm    SMOKE:[Raw:182.80 Rs:23.11]39ppm
+ LPG:[Raw:188.00 Rs:22.23]11ppm    CO:[Raw:179.60 Rs:23.51]80ppm    SMOKE:[Raw:177.20 Rs:23.88]33ppm
+ LPG:[Raw:166.80 Rs:25.67]5ppm    CO:[Raw:160.80 Rs:26.82]32ppm    SMOKE:[Raw:160.20 Rs:26.96]17ppm
+ LPG:[Raw:146.40 Rs:30.13]2ppm    CO:[Raw:143.40 Rs:30.70]13ppm    SMOKE:[Raw:145.40 Rs:30.19]9ppm
+ LPG:[Raw:138.20 Rs:32.04]1ppm    CO:[Raw:135.00 Rs:32.90]8ppm    SMOKE:[Raw:134.00 Rs:33.20]5ppm
+ LPG:[Raw:124.20 Rs:36.19]1ppm    CO:[Raw:124.40 Rs:36.18]4ppm    SMOKE:[Raw:122.00 Rs:36.95]3ppm
+ LPG:[Raw:118.60 Rs:38.16]0ppm    CO:[Raw:112.60 Rs:40.48]2ppm    SMOKE:[Raw:114.60 Rs:39.67]2ppm
+ LPG:[Raw:109.80 Rs:41.63]0ppm    CO:[Raw:107.40 Rs:42.68]1ppm    SMOKE:[Raw:107.20 Rs:42.78]1ppm
+ LPG:[Raw:99.80 Rs:46.86]0ppm    CO:[Raw:104.00 Rs:44.28]1ppm    SMOKE:[Raw:102.00 Rs:45.18]1ppm
+ LPG:[Raw:99.20 Rs:46.71]0ppm    CO:[Raw:101.20 Rs:45.60]0ppm    SMOKE:[Raw:97.80 Rs:47.32]0ppm
+ LPG:[Raw:99.40 Rs:46.49]0ppm    CO:[Raw:95.40 Rs:48.68]0ppm    SMOKE:[Raw:93.40 Rs:49.78]0ppm
+ LPG:[Raw:94.20 Rs:49.32]0ppm    CO:[Raw:90.60 Rs:51.52]0ppm    SMOKE:[Raw:88.20 Rs:53.07]0ppm
+ LPG:[Raw:90.80 Rs:51.42]0ppm    CO:[Raw:87.60 Rs:53.40]0ppm    SMOKE:[Raw:87.20 Rs:53.71]0ppm
+ LPG:[Raw:87.20 Rs:53.82]0ppm    CO:[Raw:81.80 Rs:57.88]0ppm    SMOKE:[Raw:89.60 Rs:52.10]0ppm
+
 
 
 ======================Teste com o programa de exemplo do arduino

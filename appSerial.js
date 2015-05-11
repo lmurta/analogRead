@@ -39,6 +39,7 @@ var config_pins = require('./config_pins');
 var new_data = {};
 var new_CO2_data = {};
 var new_MQ2_data = {};
+var new_MQ4_data = {};
 
 
 //two points are taken from the curve. 
@@ -89,7 +90,7 @@ var MQ2_RO_CLEAN_AIR_FACTOR     = 9.83;  //RO_CLEAR_AIR_FACTOR=(Sensor resistanc
  
 //Ro is initialized to 10 kilo ohms
 var           MQ2_Ro           =  9.7; //valor medido experimentalmente
-var           MQ4_Ro           =  13.6; //valor medido experimentalmente
+var           MQ4_Ro           =  25.5; //valor medido experimentalmente
 var           MQ6_Ro           =  5.68; //valor medido experimentalmente
 
 
@@ -213,6 +214,12 @@ function process_MQ4(analogRead){
   var MQ4_H2      = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_H2);
   var MQ4_CH4     = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_CH4);
   var MQ4_ETH     = MQ_MQGetPercentage(rs/MQ4_Ro,MQ4_GAS_ETH);
+  new_MQ4_data["MQ4_LPG"] = MQ4_LPG.toFixed(2);
+  new_MQ4_data["MQ4_CO"] = MQ4_CO.toFixed(2);
+  new_MQ4_data["MQ4_SMOKE"] = MQ4_SMOKE.toFixed(2);
+  new_MQ4_data["MQ4_H2"] = MQ4_H2.toFixed(2);
+  new_MQ4_data["MQ4_CH4"] = MQ4_CH4.toFixed(2);
+  new_MQ4_data["MQ4_ETH"] = MQ4_ETH.toFixed(2);
 
   console.log("LPG="      + MQ4_LPG.toFixed(2) + " "
               +"CO="      + MQ4_CO.toFixed(2) + " "
@@ -330,6 +337,7 @@ io.sockets.on('connection', function(socket){
       socket.emit('new_data', new_data);
       socket.emit('new_CO2_data', new_CO2_data);
       socket.emit('new_MQ2_data', new_MQ2_data);
+      socket.emit('new_MQ4_data', new_MQ4_data);
 
         socket.emit('serverStartTicker', { logInterval: logInterval });
       date = new Date() ;
