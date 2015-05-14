@@ -27,12 +27,17 @@ var users = require('./routes/users');
 //var ArduinoFirmata = require('arduino-firmata');
 //var arduino = new ArduinoFirmata().connect();
 
+//var portName = "/dev/ttyUSB0";
+var portName = "/dev/ttyACM0";
+
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
-var sp = new SerialPort("/dev/ttyUSB0", {
+
+var sp = new SerialPort(portName, {
   baudrate: 57600,
   parser: serialport.parsers.readline("\r\n")
 });
+sp.flush(function(err,results){});
 
 var H,T, A0,A1,A2,A3,A4,A5 ;
 var config_pins = require('./config_pins');
@@ -157,7 +162,7 @@ app.use(function(err, req, res, next) {
 });
 
 sp.on("data", function (data) {
-  //console.log(data);
+  console.log(data);
   var re = /\0/g; //cleanup null characters
   var str = data.toString().replace(re, "");
 

@@ -35,10 +35,11 @@ int readings[6][numReadings];      // the readings from the analog input
 int index = 0;                  // the index of the current reading
 int total[] = {0,0,0,0,0,0};                  // the running total
 int average[] = {0,0,0,0,0,0};                // the average
+String jsonString;
 
 void setup() {
   Serial.begin(57600); 
-  Serial.println("{\"Name\":\"DHTxx test!\"}");
+  //Serial.println("{\"Name\":\"DHTxx test!\"}");
   for(int i=0; i<6; i++){
      pinMode(i, INPUT);
   } 
@@ -83,23 +84,20 @@ void loop() {
   // Must send in temp in Fahrenheit!
   //float hi = dht.computeHeatIndex(f, h);
 
-  Serial.print("{");
-  Serial.print("\"H\":"); 
-  Serial.print(h);
-  Serial.print(",");
-  Serial.print("\"T\":"); 
-  Serial.print(t);
-  
+  jsonString = "{\"H\":";
+  jsonString += h;
+  jsonString +=",\"T\":";
+  jsonString += t;
+    
   for(int i=0; i<6; i++){
-    Serial.print(",");
-    Serial.print("\"A");
-    Serial.print(i);
-    Serial.print("\":");
-    Serial.print(average[i]);
+    jsonString +=",\"A";
+    jsonString += i;
+    jsonString +="\":";
+    jsonString += average[i];
+
   }
-  
-  
-  Serial.println("}");
+  jsonString +="}";
+  Serial.println(jsonString);
   delay(200);
 
 }
