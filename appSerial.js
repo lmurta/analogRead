@@ -1,3 +1,10 @@
+/////////////////////////
+/////////////////////////USAR EM CONJUNTO COMO ARDUINO DTH11_JSON AT 57600
+/////////////////////////
+/////////////////////////
+
+
+
 'use strict';
 var express = require('express');
 var debug = require('debug')('analogread_02:server');
@@ -27,8 +34,8 @@ var users = require('./routes/users');
 //var ArduinoFirmata = require('arduino-firmata');
 //var arduino = new ArduinoFirmata().connect();
 
-//var portName = "/dev/ttyUSB0";
-var portName = "/dev/ttyACM0";
+var portName = "/dev/ttyUSB0";
+//var portName = "/dev/ttyACM0";
 
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
@@ -169,7 +176,7 @@ sp.on("data", function (data) {
   var jsonObj = JSON.parse(str);
   for(var config_pins_key in config_pins){
     if (typeof jsonObj[config_pins_key] !== 'undefined'){
-        //console.log(config_pins[config_pins_key] +"="+ jsonObj[config_pins_key]); 
+        console.log(config_pins[config_pins_key] +"="+ jsonObj[config_pins_key]); 
         new_data[config_pins[config_pins_key]] = jsonObj[config_pins_key];
         if (config_pins[config_pins_key] == "MQ2"){ process_MQ2(jsonObj[config_pins_key]); }
         if (config_pins[config_pins_key] == "MQ4"){ process_MQ4(jsonObj[config_pins_key]); }
