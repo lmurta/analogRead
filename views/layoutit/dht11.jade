@@ -82,6 +82,12 @@ head
         for (var j=0;j<7;j++){
           data_MQ2[j] = new Array();
           data_MQ2_Label[j]="";
+        }            
+        var data_MQ3        = new Array(7);
+        var data_MQ3_Label  = new Array(7);
+        for (var j=0;j<7;j++){
+          data_MQ3[j] = new Array();
+          data_MQ3_Label[j]="";
         }    
         var data_MQ4        = new Array(7);
         var data_MQ4_Label  = new Array(7);
@@ -122,6 +128,20 @@ head
           update();
           //console.log(d0);
         });
+        socket.on('new_MQ3_data', function (data) {
+          now = ((new Date()).getTime());
+          var index = 0;
+          for(var data_key in data){
+            if(data_MQ3[index].length>totalPoints){
+              data_MQ3[index] = data_MQ3[index].slice(0-totalPoints);
+            }
+            data_MQ3[index].push([now,data[data_key]]);
+            data_MQ3_Label[index] = data_key;
+            index++;
+          }
+          update();
+          //console.log(d0);
+        });
         socket.on('new_MQ4_data', function (data) {
           now = ((new Date()).getTime());
           var index = 0;
@@ -152,7 +172,7 @@ head
           $('#div_T').text(data.T +"°C");
           $('#div_an0').text(data.MG811 +":"+dataToPlotLabel[2]);
           $('#div_an1').text(data.MQ2 +":"+dataToPlotLabel[3]);
-          $('#div_an4').text(data.MQ4 +":"+dataToPlotLabel[4]);
+          $('#div_an2').text(data.MQ3 +":"+dataToPlotLabel[4]);
           update();
           //console.log(d0);
           socket.emit('my other event', { my: 'client do server' });
@@ -258,7 +278,10 @@ head
               { data: data_MQ4[5], label:data_MQ4_Label[5],  lineWidth: 4,lines: { show: true },points: { show: false }},                
               { data: data_MQ4[6], label:data_MQ4_Label[6],  lineWidth: 4,lines: { show: true },points: { show: false }},                
             ];
-          plot4 = $.plot("#flot4", d_MQ4 , {
+          d_MQ3=[
+              { data: data_MQ3[0], label:data_MQ3_Label[0],  lineWidth: 4,lines: { show: true },points: { show: false }},
+            ];
+          plot4 = $.plot("#flot4", d_MQ3 , {
             series: {
               lines: {
                 lineWidth: 1,
@@ -274,7 +297,9 @@ head
                       show: true,
                       //rotateTicks: 135,
             }],
-            yaxes: [  { position: "left" , min: 0, max: 10000 }, 
+            yaxes: [  
+                    //{ position: "left" , min: 0, max: 10000 }, 
+                    { position: "left" , min: 0, max: 2 }, //para MQ3 
                   ],
           });
           plot4.draw();
@@ -352,8 +377,8 @@ head
           #footer
           #plotly
           #flot2.demo-flot(style="width:800px;height:400px")
-          #flot3.demo-flot(style="width:800px;height:400px")
           #flot4.demo-flot(style="width:800px;height:400px")
+          #flot3.demo-flot(style="width:800px;height:400px")
           h2
             | Instruções
           ul

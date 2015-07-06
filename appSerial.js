@@ -39,6 +39,7 @@ var portName = "/dev/ttyUSB0";
 
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
+var scraper = require('json-scrape')();
 
 var sp = new SerialPort(portName, {
   baudrate: 57600,
@@ -51,6 +52,7 @@ var config_pins = require('./config_pins');
 var new_data = {};
 var new_CO2_data = {};
 var new_MQ2_data = {};
+var new_MQ3_data = {};
 var new_MQ4_data = {};
 
 
@@ -80,6 +82,9 @@ var MQ6_GAS_H2      = 15; pcurves[MQ6_GAS_H2]      = [2.3,0.76,-0.26];
 var MQ6_GAS_CH4     = 16; pcurves[MQ6_GAS_CH4]     = [2.3,0.41,-0.40];
 var MQ6_GAS_LPG     = 17; pcurves[MQ6_GAS_LPG]     = [2.3,0.32,-0.43];
 
+var MG811_GAS_CO2   = 18; pcurves[MG811_GAS_CO2]   =  [2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))];
+var MQ3_GAS_ETH     = 19; pcurves[MQ3_GAS_ETH]     = [ -1,0.34,-0.63];
+
 
 var     MG811_DC_GAIN = 12.0;//8.5;
 //These two values differ from sensor to sensor. user should derermine this value.
@@ -90,8 +95,9 @@ var         MG811_REACTION_VOLTAGE    = 0.020; //define the voltage drop of the 
 //data format:{ x, y, slope}; point1: (lg400, 0.324), point2: (lg4000, 0.280)
 //slope = ( reaction voltage ) / (log400 –log1000)
 //float           MG811_CO2Curve[3]  =  {2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))};
-var MG811_GAS_CO2   = 18; pcurves[MG811_GAS_CO2]   =  [2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))];
 
+var MQ3_RL_VALUE                = 350;
+var MQ3_RO_CLEAN_AIR_FACTOR     = 60;
 
 var MQ2_RL_VALUE                = 5;     //define the load resistance on the board, in kilo ohms
 var MQ4_RL_VALUE                = 20;
@@ -102,6 +108,7 @@ var MQ2_RO_CLEAN_AIR_FACTOR     = 9.83;  //RO_CLEAR_AIR_FACTOR=(Sensor resistanc
  
 //Ro is initialized to 10 kilo ohms
 var           MQ2_Ro           =  9.7; //valor medido experimentalmente
+var           MQ3_Ro           =  175; //valor medido experimentalmente
 var           MQ4_Ro           =  25.5; //valor medido experimentalmente
 var           MQ6_Ro           =  5.68; //valor medido experimentalmente
 
@@ -118,7 +125,7 @@ fs.appendFile(fileName, 'date,A0,A1,A2,A3,A4,A5,H,T\n', function (err) {
 });
 var timeStamp;
 var dataLog = false;
-var logInterval = 1000 * 120; //1000 * X segundos
+var logInterval = 1000 * 2; //1000 * X segundos
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -169,29 +176,59 @@ app.use(function(err, req, res, next) {
 });
 
 sp.on("data", function (data) {
-  console.log(data);
-  var re = /\0/g; //cleanup null characters
-  var str = data.toString().replace(re, "");
+    scraper.write(data.toString());
+});
+scraper.on('data', function (cleandata) {
+    console.log(cleandata);
+    if (typeof cleandata.H != "number") {
+      console.log('This is not number');
+      return;
+    }
+    A0 = cleandata.A0;
+    A1 = cleandata.A1;
+    A2 = cleandata.A2;
+    A3 = cleandata.A3;
+    A4 = cleandata.A4;
+    A5 = cleandata.A5;
+    H = cleandata.H;
+    T = cleandata.T;
+  //console.log(data);
+  //var re = /\0/g; //cleanup null characters
+  //var str = data.toString().replace(re, "");
 
-  var jsonObj = JSON.parse(str);
+  //var jsonObj = JSON.parse(cleandata);
   for(var config_pins_key in config_pins){
-    if (typeof jsonObj[config_pins_key] !== 'undefined'){
-        console.log(config_pins[config_pins_key] +"="+ jsonObj[config_pins_key]); 
-        new_data[config_pins[config_pins_key]] = jsonObj[config_pins_key];
-        if (config_pins[config_pins_key] == "MQ2"){ process_MQ2(jsonObj[config_pins_key]); }
-        if (config_pins[config_pins_key] == "MQ4"){ process_MQ4(jsonObj[config_pins_key]); }
-        if (config_pins[config_pins_key] == "MQ6"){ process_MQ6(jsonObj[config_pins_key]); }
-        if (config_pins[config_pins_key] == "MG811"){ process_MG811(jsonObj[config_pins_key]); }
+    if (typeof cleandata[config_pins_key] !== 'undefined'){
+        console.log(config_pins[config_pins_key] +"="+ cleandata[config_pins_key]); 
+        new_data[config_pins[config_pins_key]] = cleandata[config_pins_key];
+        if (config_pins[config_pins_key] == "MQ2"){ process_MQ2(cleandata[config_pins_key]); }
+        if (config_pins[config_pins_key] == "MQ3"){ process_MQ3(cleandata[config_pins_key]); }
+        if (config_pins[config_pins_key] == "MQ4"){ process_MQ4(cleandata[config_pins_key]); }
+        if (config_pins[config_pins_key] == "MQ6"){ process_MQ6(cleandata[config_pins_key]); }
+        if (config_pins[config_pins_key] == "MG811"){ process_MG811(cleandata[config_pins_key]); }
 
     }
   }
 
 
 });
+function process_MQ3(analogRead){
+  console.log("Processing MQ3 = "+analogRead);
+  var rs = MQ_MQRead(MQ3_RL_VALUE,analogRead);
+  console.log("MQ3_RL_VALUE="+MQ3_RL_VALUE.toFixed(2)+" RS="+rs.toFixed(2)+" MQ3_Ro="+MQ3_Ro.toFixed(2));
+  var MQ3_ETH     = MQ_MQGetPercentage(rs/MQ3_Ro,MQ3_GAS_ETH); //the result is in mg/L not percent
+  if (MQ3_ETH > 10) MQ3_ETH =0;
+  if (MQ3_ETH < 0.1) MQ3_ETH =0;
+  new_MQ3_data["MQ3_ETH"] = MQ3_ETH.toFixed(2);
+
+  console.log(
+              "ETH="     + MQ3_ETH.toFixed(2) + "mg/L"
+              );
+}
 function process_MQ2(analogRead){
   console.log("Processing MQ2 = "+analogRead);
   var rs = MQ_MQRead(MQ2_RL_VALUE,analogRead);
-  console.log("RS="+rs);
+  //console.log("RS="+rs);
   var MQ2_LPG     = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_LPG);
   var MQ2_CO      = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_CO);
   var MQ2_SMOKE   = MQ_MQGetPercentage(rs/MQ2_Ro,MQ2_GAS_SMOKE);
@@ -314,9 +351,9 @@ function  MQ_MQGetPercentage( rs_ro_ratio, curva){
                               )/pcurve[2]
                            ) + pcurve[0]
                         );
-  //console.log("rs_ro_ratio:"+rs_ro_ratio+"log:"+(Math.log(rs_ro_ratio)/Math.LN10) );
-  //console.log("rs_ro_ratio:"+rs_ro_ratio+" pcurve[0]:"+pcurve[0]+" pcurve[1]:"+pcurve[1]+" pcurve[2]:"+pcurve[2])
-  //console.log("percent:"+percent);
+  console.log("rs_ro_ratio:"+rs_ro_ratio+"log:"+(Math.log(rs_ro_ratio)/Math.LN10) );
+  console.log("rs_ro_ratio:"+rs_ro_ratio+" pcurve[0]:"+pcurve[0]+" pcurve[1]:"+pcurve[1]+" pcurve[2]:"+pcurve[2])
+  console.log("percent:"+percent);
   return percent;
 }
 /*****************************  MQGetPercentage **********************************
@@ -349,6 +386,7 @@ io.sockets.on('connection', function(socket){
       socket.emit('new_data', new_data);
       socket.emit('new_CO2_data', new_CO2_data);
       socket.emit('new_MQ2_data', new_MQ2_data);
+      socket.emit('new_MQ3_data', new_MQ3_data);
       socket.emit('new_MQ4_data', new_MQ4_data);
 
         socket.emit('serverStartTicker', { logInterval: logInterval });

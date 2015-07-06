@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="drawing.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.2951829"
+     inkscape:cx="299.13772"
+     inkscape:cy="635.93666"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1024"
+     inkscape:window-height="691"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="axonomgrid"
+       id="grid2985"
+       units="mm"
+       empspacing="5"
+       visible="false"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       gridanglex="45"
+       gridanglez="45" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="arc"
+       style="fill:#808080;fill-opacity:1;stroke:#000000"
+       id="path2987"
+       sodipodi:cx="283.46457"
+       sodipodi:cy="396.85037"
+       sodipodi:rx="44.29134"
+       sodipodi:ry="44.29134"
+       d="m 314.88763,365.63636 a 44.29134,44.29134 0 1 1 -62.91237,0.0668 l 31.48931,31.14717 z"
+       sodipodi:start="5.5011246"
+       sodipodi:end="10.204714"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Oswald;-inkscape-font-specification:Oswald"
+       x="317.12598"
+       y="366.73227"
+       id="text2989"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan2991"
+         x="317.12598"
+         y="366.73227">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Oswald;-inkscape-font-specification:Oswald"
+       x="340.15747"
+       y="403.93698"
+       id="text2993"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan2995"
+         x="340.15747"
+         y="403.93698">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Oswald;-inkscape-font-specification:Oswald"
+       x="320.66928"
+       y="441.14172"
+       id="text2997"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan2999"
+         x="320.66928"
+         y="441.14172">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Oswald;-inkscape-font-specification:Oswald"
+       x="278.1496"
+       y="458.85825"
+       id="text3001"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3003"
+         x="278.1496"
+         y="458.85825">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Oswald;-inkscape-font-specification:Oswald"
+       x="239.17323"
+       y="444.68503"
+       id="text3005"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3007"
+         x="239.17323"
+         y="444.68503">4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Oswald;-inkscape-font-specification:Oswald"
+       x="219.68504"
+       y="403.93698"
+       id="text3009"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3011"
+         x="219.68504"
+         y="403.93698">5</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Oswald;-inkscape-font-specification:Oswald"
+       x="240.94489"
+       y="364.9606"
+       id="text3013"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3015"
+         x="240.94489"
+         y="364.9606">6</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 319.94182,396.85037 17.71654,0"
+       id="path3019"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 310.94621,423.04952 8.85827,8.85827"
+       id="path3021"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 283.72107,425.88919 0,17.71653"
+       id="path3023"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 257.52192,424.07551 -8.85827,8.85827"
+       id="path3025"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.24503815px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 248.64545,396.96916 -17.71653,0"
+       id="path3027"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:7.34768677;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 281.23052,399.85392 -21.69593,21.69593"
+       id="path3025-2"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luciano/FixedHome/gitProjects/analogRead/dial.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
