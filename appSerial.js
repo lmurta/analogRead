@@ -81,7 +81,7 @@ var MQ6_GAS_CH4     = 16; pcurves[MQ6_GAS_CH4]     = [2.3,0.41,-0.40];
 var MQ6_GAS_LPG     = 17; pcurves[MQ6_GAS_LPG]     = [2.3,0.32,-0.43];
 
 
-var     MG811_DC_GAIN = 8.5;
+var     MG811_DC_GAIN = 12.0;//8.5;
 //These two values differ from sensor to sensor. user should derermine this value.
 var         MG811_ZERO_POINT_VOLTAGE  = 0.220; //define the output of the sensor in volts when the concentration of CO2 is 400PPM
 var         MG811_REACTION_VOLTAGE    = 0.020; //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
@@ -118,7 +118,7 @@ fs.appendFile(fileName, 'date,A0,A1,A2,A3,A4,A5,H,T\n', function (err) {
 });
 var timeStamp;
 var dataLog = false;
-var logInterval = 1000 * 2; //1000 * X segundos
+var logInterval = 1000 * 120; //1000 * X segundos
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
