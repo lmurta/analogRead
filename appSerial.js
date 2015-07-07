@@ -82,19 +82,21 @@ var MQ6_GAS_H2      = 15; pcurves[MQ6_GAS_H2]      = [2.3,0.76,-0.26];
 var MQ6_GAS_CH4     = 16; pcurves[MQ6_GAS_CH4]     = [2.3,0.41,-0.40];
 var MQ6_GAS_LPG     = 17; pcurves[MQ6_GAS_LPG]     = [2.3,0.32,-0.43];
 
-var MG811_GAS_CO2   = 18; pcurves[MG811_GAS_CO2]   =  [2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))];
-var MQ3_GAS_ETH     = 19; pcurves[MQ3_GAS_ETH]     = [ -1,0.34,-0.63];
-
-
-var     MG811_DC_GAIN = 12.0;//8.5;
+var MG811_DC_GAIN = 12.0;//8.5;
 //These two values differ from sensor to sensor. user should derermine this value.
-var         MG811_ZERO_POINT_VOLTAGE  = 0.220; //define the output of the sensor in volts when the concentration of CO2 is 400PPM
-var         MG811_REACTION_VOLTAGE    = 0.020; //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+var MG811_ZERO_POINT_VOLTAGE  = 0.220; //define the output of the sensor in volts when the concentration of CO2 is 400PPM
+var MG811_REACTION_VOLTAGE    = 0.020; //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
 //two points are taken from the curve.//with these two points, a line is formed which is
 //"approximately equivalent" to the original curve.
 //data format:{ x, y, slope}; point1: (lg400, 0.324), point2: (lg4000, 0.280)
 //slope = ( reaction voltage ) / (log400 –log1000)
 //float           MG811_CO2Curve[3]  =  {2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))};
+
+var MG811_GAS_CO2   = 18; pcurves[MG811_GAS_CO2]   =  [2.602, MG811_ZERO_POINT_VOLTAGE, (MG811_REACTION_VOLTAGE / (2.602 - 3))];
+var MQ3_GAS_ETH     = 19; pcurves[MQ3_GAS_ETH]     = [ -1,0.34,-0.63];
+
+
+
 
 var MQ3_RL_VALUE                = 350;
 var MQ3_RO_CLEAN_AIR_FACTOR     = 60;
@@ -217,7 +219,20 @@ function process_MQ3(analogRead){
   var rs = MQ_MQRead(MQ3_RL_VALUE,analogRead);
   console.log("MQ3_RL_VALUE="+MQ3_RL_VALUE.toFixed(2)+" RS="+rs.toFixed(2)+" MQ3_Ro="+MQ3_Ro.toFixed(2));
   var MQ3_ETH     = MQ_MQGetPercentage(rs/MQ3_Ro,MQ3_GAS_ETH); //the result is in mg/L not percent
-  if (MQ3_ETH > 10) MQ3_ETH =0;
+
+
+  //umidity correction
+  var hr33 = 1.00;
+  var hr85 = 0.90;
+  var rsdelta =hr33-hr85;
+  var hrdelta =33 - 85;
+  var hrgrad = rsdelta/hrdelta;
+  var htab =65;
+  var hdelta = H - htab;
+  var hrfactor = hdelta * hrgrad;
+  console.log("H:"+H+" T:"+T+"factor:"+hrfactor);
+  MQ3_ETH = MQ3_ETH - hrfactor;
+    if (MQ3_ETH > 10) MQ3_ETH =0;
   if (MQ3_ETH < 0.1) MQ3_ETH =0;
   new_MQ3_data["MQ3_ETH"] = MQ3_ETH.toFixed(2);
 
@@ -297,10 +312,10 @@ function process_MQ6(analogRead){
 }
 function process_MG811(analogRead){
   var volts = analogRead * 5 / 1024 ;
-  //console.log("Processing MG811 = "+analogRead + " V="+volts);
+  console.log("Processing MG811 = "+analogRead + " V="+volts);
   
-  //var rs = MQ_MQRead(MQ6_RL_VALUE,analogRead);
-  //console.log("RS="+rs);
+  var rs = MQ_MQRead(MQ6_RL_VALUE,analogRead);
+  console.log("RS="+rs);
   var MG811_CO2     = MG811_MGGetPercentage(volts, MG811_GAS_CO2);
   new_CO2_data["MG811_CO2"] = MG811_CO2.toFixed(2);
   console.log("MG811_CO2="      + MG811_CO2.toFixed(2) + " "
@@ -351,8 +366,8 @@ function  MQ_MQGetPercentage( rs_ro_ratio, curva){
                               )/pcurve[2]
                            ) + pcurve[0]
                         );
-  console.log("rs_ro_ratio:"+rs_ro_ratio+"log:"+(Math.log(rs_ro_ratio)/Math.LN10) );
-  console.log("rs_ro_ratio:"+rs_ro_ratio+" pcurve[0]:"+pcurve[0]+" pcurve[1]:"+pcurve[1]+" pcurve[2]:"+pcurve[2])
+  //console.log("rs_ro_ratio:"+rs_ro_ratio+"log:"+(Math.log(rs_ro_ratio)/Math.LN10) );
+  //console.log("rs_ro_ratio:"+rs_ro_ratio+" pcurve[0]:"+pcurve[0]+" pcurve[1]:"+pcurve[1]+" pcurve[2]:"+pcurve[2])
   console.log("percent:"+percent);
   return percent;
 }
