@@ -1,0 +1,5 @@
+~/FixedHome/gitProjects/analogread$ 
+
+node appSerial.js
+
+http://localhost:3000/dht11

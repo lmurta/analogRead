@@ -1,0 +1,10 @@
+~/FixedHome/gitProjects/analogread$ 
+
+  423  sudo npm install -g
+  426  sudo npm install json-scrape
+  428  sudo npm install arduino-firmata
+
+
+node appSerial.js
+
+http://localhost:3000/dht11
