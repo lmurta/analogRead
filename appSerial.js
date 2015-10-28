@@ -82,7 +82,7 @@ var MQ6_GAS_H2      = 15; pcurves[MQ6_GAS_H2]      = [2.3,0.76,-0.26];
 var MQ6_GAS_CH4     = 16; pcurves[MQ6_GAS_CH4]     = [2.3,0.41,-0.40];
 var MQ6_GAS_LPG     = 17; pcurves[MQ6_GAS_LPG]     = [2.3,0.32,-0.43];
 
-var MG811_DC_GAIN = 12.0;//8.5;
+var MG811_DC_GAIN = 10;//12.0;//8.5;
 //These two values differ from sensor to sensor. user should derermine this value.
 var MG811_ZERO_POINT_VOLTAGE  = 0.220; //define the output of the sensor in volts when the concentration of CO2 is 400PPM
 var MG811_REACTION_VOLTAGE    = 0.020; //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
@@ -104,6 +104,7 @@ var MQ3_RO_CLEAN_AIR_FACTOR     = 60;
 var MQ2_RL_VALUE                = 5;     //define the load resistance on the board, in kilo ohms
 var MQ4_RL_VALUE                = 20;
 var MQ6_RL_VALUE                = 20;
+var MQ811_RL_VALUE                = 20;
 
 var MQ2_RO_CLEAN_AIR_FACTOR     = 9.83;  //RO_CLEAR_AIR_FACTOR=(Sensor resistance in clean air)/RO,
                                                      //which is derived from the chart in datasheet
@@ -314,7 +315,7 @@ function process_MG811(analogRead){
   var volts = analogRead * 5 / 1024 ;
   console.log("Processing MG811 = "+analogRead + " V="+volts);
   
-  var rs = MQ_MQRead(MQ6_RL_VALUE,analogRead);
+  var rs = MQ_MQRead(MQ811_RL_VALUE,analogRead);
   console.log("RS="+rs);
   var MG811_CO2     = MG811_MGGetPercentage(volts, MG811_GAS_CO2);
   new_CO2_data["MG811_CO2"] = MG811_CO2.toFixed(2);
